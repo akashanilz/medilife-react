@@ -1,12 +1,13 @@
 import React from 'react'
-
+import Header from '../Dashboard/Header/Header'
+import Home from '../Dashboard/Home/Home'
+import './Dashboard.css'
 function Dashboard() {
     return (
-        <div>
-            <h1>
-                Dashboard
-            </h1>
-        </div>
+      <div>
+        <Header/>
+        <Home/>
+      </div>
     )
 }
 

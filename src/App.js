@@ -1,5 +1,4 @@
 import { BrowserRouter as Router,Route,Link } from 'react-router-dom';
-import './App.css';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';

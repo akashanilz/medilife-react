@@ -1,18 +1,46 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { Link } from 'react-router-dom'
+import { Link , useHistory} from 'react-router-dom'
+import axios from '../../axios'
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
 function Header() {
-    const navigation = [
-    { name: 'Dashboard', to: '/dashboard', current: true },
-    { name: 'Employees', to: '/employee', current: false },
-    { name: 'Clients', to: '/clients', current: false },
+  const [auth, setAuth] = useState('')
+  useEffect(() => {
+    if(!localStorage.getItem("token")){
+      history.push('/login')
+    }else{
+      const token = JSON.parse(localStorage.getItem("token"))
+      const config = {
+        headers: { Authorization: `Bearer ${token.token} `}
+    };
+      axios.get("dashboard", config).then((response)=>{
+        setAuth(response.data)
+        console.log(response.data)
+        })
+       
+       
+    }
     
-  ]
+  }, [])
+  console.log(auth.role)
+  const history = useHistory()
+    const navigation = [ 
+      { name: 'Dashboard', to: '/dashboard', current: true },
+      { name: 'Employees', to: '/employee', current: false },
+      { name: 'Clients', to: 'view', current: false },
+      
+    ]
+    const navigation1 = [ 
+      { name: 'Dashboard', to: '/dashboard', current: true },
+      
+    ]
+  
+
+ 
     return (
         <div>
         <Disclosure as="nav" className="bg-gray-800">
@@ -45,8 +73,7 @@ function Header() {
                />
              </div>
              <div className="hidden sm:block sm:ml-6">
-               <div className="flex space-x-4">
-                 
+               {auth.role===1 &&<div className="flex space-x-4">
                  {navigation.map((item) => (
                    <Link
                      key={item.name}
@@ -60,7 +87,23 @@ function Header() {
                      {item.name}
                    </Link>
                  ))}
-               </div>
+               </div>}
+               {auth.role===2 &&<div className="flex space-x-4">
+                 
+                 {navigation1.map((item) => (
+                   <Link
+                     key={item.name}
+                     to={item.to}
+                     className={classNames(
+                       item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                       'px-3 py-2 rounded-md text-sm font-medium no-underline'
+                     )}
+                     aria-current={item.current ? 'page' : undefined}
+                   >
+                     {item.name}
+                   </Link>
+                 ))}
+               </div>}
              </div>
            </div>
            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -73,7 +116,7 @@ function Header() {
                    <span className="sr-only">Open user menu</span>
                    <img
                      className="h-8 w-8 rounded-full"
-                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                     src="https://img.icons8.com/nolan/50/administrator-male.png"
                      alt=""
                    />
                  </Menu.Button>
@@ -90,22 +133,25 @@ function Header() {
                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                    <Menu.Item>
                      {({ active }) => (
-                       <a
-                         href="#"
-                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                       <p
+                         className={classNames(active ? 'bg-gray-100 no-underline cursor-pointer' : '', 'cursor-pointerblock px-4 py-2 text-sm text-gray-700 no-underline')}
                        >
                          Your Profile
-                       </a>
+                       </p>
                      )}
                    </Menu.Item>
                    <Menu.Item>
                      {({ active }) => (
-                       <a
-                         href="#"
-                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                       <p
+                         onClick={()=>{
+                           localStorage.clear()
+                           history.push("/")
+                         }}
+                         className={classNames(active ? 'bg-gray-100 no-underline cursor-pointer'  : '', 'cursor-pointer block no-underline px-4 py-2 text-sm text-gray-700')}
                        >
                          Sign out
-                       </a>
+                       </p>
+
                      )}
                    </Menu.Item>
                  </Menu.Items>

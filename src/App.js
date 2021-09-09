@@ -5,6 +5,7 @@ import Login from './Components/Login/Login';
 import Create from './Components/Pages/Curd/Create';
 import Update from './Components/Pages/Curd/Update';
 import View from './Components/Pages/Curd/View';
+import ProtectedRoutes from './Components/ProtectedRoutes/ProtectedRoutes';
 
 function App() {
   return (
@@ -17,16 +18,16 @@ function App() {
             <Login></Login>
           </Route>
           <Route  exact path="/dashboard">
-            <Dashboard></Dashboard>
+            <ProtectedRoutes routes={Dashboard}/>
           </Route>
           <Route  path="/dashboard/create">
-            <Create></Create>
+          <ProtectedRoutes routes={Create}/>
           </Route>
           <Route  path="/dashboard/update">
-            <Update></Update>
+          <ProtectedRoutes routes={Update}/>
           </Route>
           <Route  path="/dashboard/view">
-            <View></View>
+          <ProtectedRoutes routes={View}/>
           </Route>
         </Router>
     </div>

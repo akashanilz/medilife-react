@@ -1,0 +1,41 @@
+.btnb{
+    background-color: rgb(128, 198, 245);
+    width: 25px;
+    height: 30px;
+    text-align: center;
+    align-items: center;
+}
+.btny{
+    background-color: rgb(240, 226, 100);
+    width: 25px;
+    height: 30px;
+    text-align: center;
+    align-items: center;
+}
+.btnr{
+    background-color: rgb(253, 121, 104);
+    width: 25px;
+    height: 30px;
+    text-align: center;
+    align-items: center;
+}
+.viewtable{
+    max-width: 100%;
+    overflow-y: scroll;
+    display:grid;
+
+}
+table{
+    overflow: auto;
+}
+tbody{
+    overflow-y: scroll;
+}
+  .tbl-header{
+    width:calc(100% - 17px);
+    width:-webkit-calc(100% - 17px);
+    width:-moz-calc(100% - 17px);
+  }
+.viewtable::-webkit-scrollbar{
+    display: none;
+}

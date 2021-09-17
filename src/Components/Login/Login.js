@@ -1,21 +1,32 @@
 import axios from '../axios';
 import React, { useEffect } from 'react'
+import './Login.css';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import {BeatLoader} from 'react-spinners';
+import { css } from "@emotion/react";
 
 function Login() {
+  const override = css`
+  display: block;
+  margin: 2 auto;
+  size:30;`;
+  let [loading, setLoading] = useState(false);
+  let [color, setColor] = useState("red");
   const history =useHistory();
   useEffect(() => {
        if(localStorage.getItem("token")){
          history.push("/dashboard")
        }
   }, [])
-
+  const [loader, setLoader] = useState(true)
+     const [shimmer, setShimmer] = useState(true)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [token, setToken] = useState('')
     const handleSubmit = (e)=>{
+      setLoading(true);
             e.preventDefault();
             const data = {
                 password:password,
@@ -30,6 +41,7 @@ function Login() {
                 }
                 
             }).catch(err=>{
+              setLoading(false)
               console.log(err.code)
             })
     }
@@ -100,23 +112,35 @@ function Login() {
               </label>
             </div> */}
 
-            <div className="text-sm">
+            {/* <div className="text-sm">
               <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Forgot your password?
               </a>
-            </div>
+            </div> */}
           </div>
 
           <div>
-            <button 
+            {loading ?   <button  disabled={true}
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-200  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               </span>
               Sign in
-            </button>
+            </button> :<button 
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+              </span>
+              Sign in
+            </button>}
+         
+          
           </div>
+         <div className="flex justify-center">
+         {loader && <BeatLoader color={color} loading={loading} css={override}  size={20} /> }
+         </div>
         </form>
       </div>
     </div>

@@ -2,19 +2,44 @@ import axios from '../../axios';
 import React, { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import './View.css'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 import Header from '../../Dashboard/Header/Header'
+import { toast, ToastContainer } from 'react-toastify';
 
 function View(props) {
+  const notify = () => toast('🦄 Successfully created!', {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+  const location = useLocation()
+  console.log(location.state)
   const history = useHistory();
   const [shimmer, setShimmer] = useState(true)
   const [clients, setClients] = useState([])
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("token"))
-    const config = {
-      headers: { Authorization: `Bearer ${token.token} ` }
-    };
+    if (location.state === "success") {
+      notify()
+      history.replace()
+    }
+
+    if (localStorage.getItem("token")) {
+
+    getData()
+
+    }
+
+  }, [])
+  function getData(){
     if (props.curd === "client") {
+      const token = JSON.parse(localStorage.getItem("token"))
+      const config = {
+        headers: { Authorization: `Bearer ${token.token} ` }
+      };
       axios.get("dashboard/allClients", config).then((response) => {
         setShimmer(false)
         setClients(response.data)
@@ -22,6 +47,10 @@ function View(props) {
       })
     }
     if (props.curd === "employee") {
+      const token = JSON.parse(localStorage.getItem("token"))
+      const config = {
+        headers: { Authorization: `Bearer ${token.token} ` }
+      };
       axios.get("dashboard/allEmployees", config).then((response) => {
         setShimmer(false)
         setClients(response.data)
@@ -29,27 +58,58 @@ function View(props) {
       })
     }
     if (props.curd === "client") {
+      const token = JSON.parse(localStorage.getItem("token"))
+      const config = {
+        headers: { Authorization: `Bearer ${token.token} ` }
+      };
       axios.get("dashboard/alldrivers", config).then((response) => {
         setShimmer(false)
         setClients(response.data)
         console.log(response.data)
       })
     }
+  }
+  const deleteItem = (e) => {
+    if(props.curd==="employee"){
+      window.confirm('are you sure')
+      const token = JSON.parse(localStorage.getItem("token"))
+      const config = {
+        headers: { Authorization: `Bearer ${token.token} ` }
+      };
+      axios.delete(`/dashboard/deleteEmployee/${e}`,config).then((response)=>{
+        console.log(response.data)
+        getData()
+        alert('deleted successfully')
 
-  }, [])
+      })
+    }
+    if(props.curd==="client"){
+      window.confirm('are you sure')
+      const token = JSON.parse(localStorage.getItem("token"))
+      const config = {
+        headers: { Authorization: `Bearer ${token.token} ` }
+      };
+      axios.delete(`/dashboard/deleteClient/${e}`,config).then((response)=>{
+        console.log(response.data)
+        getData()
+        alert('deleted successfully')
+      })
+    }
+
+  }
   return (
     <div className="bg-white">
       <Header />
 
       <div className="bg-white pt-2">
-        {/* {clients.length != 0 && props.curd=="client" && <div className=" pl-8 pt-3 space-x-14 pb-3">
+        {clients.length != 0 && props.curd == "client" && <div className=" pl-8 pt-3 space-x-14 pb-3">
           <button onClick={() => { history.push('/dashboard/createClient') }} className="btn btn-success ">Add Client</button>
         </div>}
-        {clients.length != 0 && props.curd=="employee" && <div className=" pl-8 pt-3 space-x-14 pb-3">
+        {clients.length != 0 && props.curd == "employee" && <div className=" pl-8 pt-3 space-x-14 pb-3">
           <button onClick={() => { history.push('/dashboard/createEmployee') }} className="btn btn-success ">Add Employee</button>
-        </div>} */}
-        {clients.length != 0 && props.curd=="client" && <h1 className="text-center pb-3">Clients</h1>}
-        {clients.length != 0 && props.curd=="employee" && <h1 className="text-center pb-3">Employees</h1>}
+        </div>}
+        {clients.length != 0 && props.curd == "client" && <h1 className="text-center pb-3">Clients</h1>}
+        {clients.length != 0 && props.curd == "employee" && <h1 className="text-center pb-3">Employees</h1>}
         <Table className="responsive" striped bordered hover>
           {clients.length != 0 && <thead>
             <tr>
@@ -75,7 +135,7 @@ function View(props) {
                   }} src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-view-cyber-security-kiranshastry-lineal-kiranshastry-3.png" /></button></span>
                     <span><button className="btny"><img width="25" src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-edit-interface-kiranshastry-lineal-kiranshastry.png" />
                     </button></span>
-                    <span><button className="btnr"><img width="25" src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-delete-multimedia-kiranshastry-lineal-kiranshastry.png" /></button></span>
+                    <span><button onClick={() => deleteItem(item.id)} className="btnr"><img width="25" src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-delete-multimedia-kiranshastry-lineal-kiranshastry.png" /></button></span>
                   </td>
                 </tr>
               )
@@ -139,6 +199,7 @@ function View(props) {
 
         }
       </div>
+      <ToastContainer />
     </div>
   )
 }

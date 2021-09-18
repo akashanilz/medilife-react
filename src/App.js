@@ -10,6 +10,7 @@ import CreateEmployee from './Components/Dashboard/Employee/CreateEmployee';
 import EditEmployee from './Components/Dashboard/Employee/EditEmployee';
 import ViewEmployees from './Components/Dashboard/Employee/ViewEmployees';
 import CreateAppointment from './Components/Dashboard/Appointment/CreateAppointment';
+import ViewAppointment from './Components/Dashboard/Appointment/ViewAppointment';
 
 function App() {
   return (
@@ -44,6 +45,9 @@ function App() {
           </Route>
           <Route  path="/dashboard/createAppointment">
           <ProtectedRoutes routes={CreateAppointment}/>
+          </Route>
+          <Route  path="/dashboard/viewAppointment">
+          <ProtectedRoutes routes={ViewAppointment}/>
           </Route>
         </Router>
     </div>

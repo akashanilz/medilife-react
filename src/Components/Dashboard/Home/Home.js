@@ -202,7 +202,12 @@ function Home(props) {
                             </div>
 
                         </div>
-                        <div className="p-6 max-w-sm cursor-pointer bg-purple-300 rounded-xl shadow-md flex items-center space-x-4">
+                        <div onClick={()=>{history.push(
+                          {
+                            pathname:'/dashboard/viewAppointment',
+                            state:"hello"
+                          }
+                        )}} className="p-6 max-w-sm cursor-pointer  bg-purple-300 rounded-xl shadow-md flex items-center space-x-4">
                             <div className="flex-shrink-0">
                                 <svg class="h-8 w-8 text-black" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z" />  <path d="M9 5H7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2V7a2 2 0 0 0 -2 -2h-2" />  <rect x="9" y="3" width="6" height="4" rx="2" />  <path d="M9 14l2 2l4 -4" /></svg>
                             </div>

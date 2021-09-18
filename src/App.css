@@ -1,0 +1,13 @@
+:root {
+    --toastify-color-light: rgb(14, 13, 13);
+  /* colors */
+  --primary-color: #f44336;
+  --primary-color-dark: color(#f44336 shade(12%));
+  --primary-color-tint: color(#f44336 tint(70%));
+  --secondary-color: rgb(255, 251, 251);
+  --secodnary-color-dark: color(#222 shade(12%));
+  --secondary-color-tint: color(#222 tint(70%));
+  
+  /* width */
+  --form-width: 16rem;
+}

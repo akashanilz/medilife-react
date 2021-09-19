@@ -5,11 +5,22 @@ import './View.css'
 import { useHistory, useLocation } from 'react-router'
 import Header from '../../Dashboard/Header/Header'
 import { toast, ToastContainer } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
 function View(props) {
-  const notify = () => toast('🦄 Successfully created!', {
+  const notify = () => toast('😜 Successfully created!', {
     position: "top-right",
-    autoClose: 3000,
+    autoClose: 4000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+  const deleteNotify = () => toast('😭 Deleted Successfully!', {
+    position: "top-right",
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -19,6 +30,7 @@ function View(props) {
   const location = useLocation()
   console.log(location.state)
   const history = useHistory();
+  const [empty, setEmpty] = useState(false)
   const [shimmer, setShimmer] = useState(true)
   const [clients, setClients] = useState([])
   useEffect(() => {
@@ -43,6 +55,9 @@ function View(props) {
       axios.get("dashboard/allClients", config).then((response) => {
         setShimmer(false)
         setClients(response.data)
+        if(response.data.length ===0){
+          setEmpty(true)
+        }
         console.log(response.data)
       })
     }
@@ -54,6 +69,9 @@ function View(props) {
       axios.get("dashboard/allEmployees", config).then((response) => {
         setShimmer(false)
         setClients(response.data)
+        if(response.data.length ===0){
+          setEmpty(true)
+        }
         console.log(response.data)
       })
     }
@@ -64,6 +82,9 @@ function View(props) {
       };
       axios.get("dashboard/alldrivers", config).then((response) => {
         setShimmer(false)
+        if(response.data.length ===0){
+          setEmpty(true)
+        }
         setClients(response.data)
         console.log(response.data)
       })
@@ -71,45 +92,88 @@ function View(props) {
   }
   const deleteItem = (e) => {
     if(props.curd==="employee"){
-      window.confirm('are you sure')
       const token = JSON.parse(localStorage.getItem("token"))
       const config = {
         headers: { Authorization: `Bearer ${token.token} ` }
       };
-      axios.delete(`/dashboard/deleteEmployee/${e}`,config).then((response)=>{
-        console.log(response.data)
-        getData()
-        alert('deleted successfully')
-
-      })
+      confirmAlert({
+        title: 'Confirm to delete',
+        message: 'Are you sure to do delete.',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => 
+            axios.delete(`/dashboard/deleteEmployee/${e}`,config).then((response)=>{
+              console.log(response.data)
+              getData()
+              deleteNotify()
+            })
+          },
+          {
+            label: 'No',
+            onClick: () => getData()
+          }
+        ]
+      });
+    
     }
     if(props.curd==="client"){
-      window.confirm('are you sure')
       const token = JSON.parse(localStorage.getItem("token"))
       const config = {
         headers: { Authorization: `Bearer ${token.token} ` }
       };
-      axios.delete(`/dashboard/deleteClient/${e}`,config).then((response)=>{
-        console.log(response.data)
-        getData()
-        alert('deleted successfully')
-      })
+      confirmAlert({
+        title: 'Confirm to delete',
+        message: 'Are you sure to do delete.',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => 
+            axios.delete(`/dashboard/deleteClient/${e}`,config).then((response)=>{
+              console.log(response.data)
+              getData()
+              deleteNotify()
+            })
+          },
+          {
+            label: 'No',
+            onClick: () => getData()
+          }
+        ]
+      });
+  
     }
 
+  }
+  function updateItem(id){
+    if(props.curd==="employee"){
+      history.push({
+        pathname: `/dashboard/updateEmployee/${id}`,
+        state: { id: id }
+      });
+    }
+    if(props.curd==="client"){
+      history.push({
+        pathname: `/dashboard/updateClient/${id}`,
+        state: { id: id }
+      });
+    }
   }
   return (
     <div className="bg-white">
       <Header />
 
       <div className="bg-white pt-2">
-        {clients.length != 0 && props.curd == "client" && <div className=" pl-8 pt-3 space-x-14 pb-3">
+        { props.curd == "client" && <div className=" pl-8 pt-3 space-x-14 pb-3">
           <button onClick={() => { history.push('/dashboard/createClient') }} className="btn btn-success ">Add Client</button>
         </div>}
-        {clients.length != 0 && props.curd == "employee" && <div className=" pl-8 pt-3 space-x-14 pb-3">
+        { props.curd == "employee" && <div className=" pl-8 pt-3 space-x-14 pb-3">
           <button onClick={() => { history.push('/dashboard/createEmployee') }} className="btn btn-success ">Add Employee</button>
         </div>}
         {clients.length != 0 && props.curd == "client" && <h1 className="text-center pb-3">Clients</h1>}
         {clients.length != 0 && props.curd == "employee" && <h1 className="text-center pb-3">Employees</h1>}
+        { empty && props.curd == "employee" && <h1 className="text-center pb-3">No Employees</h1>}
+        { empty && props.curd == "client" && <h1 className="text-center pb-3">No Clients</h1>}
         <Table className="responsive" striped bordered hover>
           {clients.length != 0 && <thead>
             <tr>
@@ -127,13 +191,8 @@ function View(props) {
                   <td>{key + 1}</td>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
-                  <td className="space-x-2 space-y-2 "><span><button className="btnb"><img width="25" onClick={() => {
-                    history.push({
-                      pathname: `/dashboard/update/${item.id}`,
-                      state: { id: item.id }
-                    });
-                  }} src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-view-cyber-security-kiranshastry-lineal-kiranshastry-3.png" /></button></span>
-                    <span><button className="btny"><img width="25" src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-edit-interface-kiranshastry-lineal-kiranshastry.png" />
+                  <td className="space-x-2 space-y-2 "><span><button className="btnb"><img width="25"  src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-view-cyber-security-kiranshastry-lineal-kiranshastry-3.png" /></button></span>
+                    <span><button onClick={() => {updateItem(item.id)}} className="btny"><img width="25" src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-edit-interface-kiranshastry-lineal-kiranshastry.png" />
                     </button></span>
                     <span><button onClick={() => deleteItem(item.id)} className="btnr"><img width="25" src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/000000/external-delete-multimedia-kiranshastry-lineal-kiranshastry.png" /></button></span>
                   </td>

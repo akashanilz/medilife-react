@@ -1,8 +1,21 @@
 import axios from '../../axios'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
-
+import { useHistory, useLocation } from 'react-router'
+import { toast, ToastContainer } from 'react-toastify';
+import Footer from '../../Footer/Footer'
+import 'react-toastify/dist/ReactToastify.css';
+import './Home.css';
 function Home(props) {
+  const appointment = () => toast('😜 Successfully scheduled appointment!', {
+    position: "top-right",
+    autoClose: 4000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+  const location = useLocation();
     const [count, setCount] = useState('')
     const history = useHistory()
     useEffect(() => {
@@ -18,14 +31,19 @@ function Home(props) {
           setCount(response.data)
         })
     }
+    if(location.state === "success"){
+      appointment()
+      history.replace()
+
+    }
     }, [])
     return (
         <div>
             <div className="bg-white">
-                <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:max-h-7xl lg:px-8">
                     { props.auth ? "" :
                          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                         <div class=" border-gray-200  rounded-md p-4 max-w-sm w-full  mx-auto">
+                         <div class=" border-gray-200  rounded-md p-4 max-w-sm  w-full  mx-auto">
          <div class="animate-pulse flex space-x-4">
            <div class="rounded-full bg-gray-200 h-12 w-12"></div>
            <div class="flex-1 space-y-4 py-1">
@@ -126,7 +144,7 @@ function Home(props) {
                     }
               {/** Admin */}
                 {props.auth===1 && <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                      <div onClick={()=>{history.push('/dashboard/viewClients')}} className="p-6 max-w-sm cursor-pointer bg-yellow-300 rounded-xl shadow-md flex items-center space-x-4">
+                      <div onClick={()=>{history.push('/dashboard/viewAppointment')}} className="p-6 max-w-sm cursor-pointer bg-yellow-300 rounded-xl shadow-md flex items-center space-x-4">
                             <div className="flex-shrink-0">
                                 <svg class="h-8 w-8 text-black-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -134,8 +152,8 @@ function Home(props) {
 
                             </div>
                             <div>
-                                <div className="text-xl font-medium text-black">Total Clients</div>
-                                <p className="text-gray-500  text-3xl font-bold"> {count.client}</p>
+                                <div className="text-xl font-medium text-black">Confirm Appointments</div>
+                                <p className="text-gray-500  text-3xl font-bold"> 4</p>
                             </div>
 
                         </div>
@@ -149,13 +167,13 @@ function Home(props) {
                             </div>
 
                         </div>
-                        <div className="p-6 max-w-sm cursor-pointer bg-green-300 rounded-xl shadow-md flex items-center space-x-4">
+                        <div onClick={()=>{history.push('/dashboard/viewDrivers')}} className="p-6 max-w-sm cursor-pointer bg-green-300 rounded-xl shadow-md flex items-center space-x-4">
                             <div className="flex-shrink-0">
                                 <svg class="h-8 w-8 text-black" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z" />  <path d="M8 13.5a4 4 0 1 0 4 0v-8.5a2 2 0 0 0 -4 0v8.5" />  <line x1="8" y1="9" x2="12" y2="9" />  <line x1="16" y1="9" x2="22" y2="9" />  <line x1="19" y1="6" x2="19" y2="12" /></svg>
                             </div>
                             <div>
                                 <div className="text-xl font-medium text-black">Total Drivers</div>
-                                <p className="text-gray-500  text-3xl font-bold"> 1</p>
+                                <p className="text-gray-500  text-3xl font-bold"> {count.driver}</p>
                             </div>
 
                         </div>
@@ -267,8 +285,10 @@ function Home(props) {
                         </div> 
 
                     </div> }
+                    <ToastContainer />
                 </div>
             </div>
+           
         </div>
     )
 }

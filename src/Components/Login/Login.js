@@ -12,11 +12,13 @@ function Login() {
   margin: 2 auto;
   size:30;`;
   let [loading, setLoading] = useState(false);
+  let [error, setError] = useState(false);
   let [color, setColor] = useState("red");
   const history =useHistory();
   useEffect(() => {
        if(localStorage.getItem("token")){
          history.push("/dashboard")
+         history.replace()
        }
   }, [])
   const [loader, setLoader] = useState(true)
@@ -27,6 +29,7 @@ function Login() {
     const [token, setToken] = useState('')
     const handleSubmit = (e)=>{
       setLoading(true);
+      setError(false)
             e.preventDefault();
             const data = {
                 password:password,
@@ -42,7 +45,11 @@ function Login() {
                 
             }).catch(err=>{
               setLoading(false)
-              console.log(err.code)
+              if(err.response.status === 401){
+
+                setError(true)
+              }
+
             })
     }
     return (
@@ -57,6 +64,7 @@ function Login() {
           />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Login</h2>
         </div>
+       { error && <p className="error">Credentials doesnot match</p>}
         <form onSubmit={handleSubmit} className="mt-8 space-y-6" action="#" >
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">

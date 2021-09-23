@@ -24,7 +24,7 @@ const history = useHistory();
   }, [])
     return (
       <div>
-        <Header auth={auth.role}/>
+        {/* <Header auth={auth.role}/> */}
         <Home auth={auth.role}/>
       </div>
     )

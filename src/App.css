@@ -11,3 +11,10 @@
   /* width */
   --form-width: 16rem;
 }
+.serverError{
+  text-align: center;
+  color: red;
+}
+.error1{
+  color: red;
+}

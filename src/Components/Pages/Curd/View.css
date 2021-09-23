@@ -12,6 +12,12 @@
   /* width */
   --form-width: 16rem;
 }
+.head11{
+    text-align: center;
+    color: black;
+    font-style: oblique;
+    font-size: 30px;
+}
 .btnb{
     background-color: rgb(128, 198, 245);
     width: 25px;

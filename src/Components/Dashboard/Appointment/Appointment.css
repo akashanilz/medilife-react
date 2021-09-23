@@ -1,0 +1,49 @@
+.heading1{
+    font-size: 25px;
+    text-align: center;
+    color: black;
+}
+.head11{
+    text-align: center;
+    color: black;
+    font-style: oblique;
+    font-size: 30px;
+}
+.labelimp{
+    color: red;
+}
+.datetime{
+    color:orangered;
+    font-weight: bold;
+
+}
+.datetime1{
+    color:green;
+    font-weight: bold;
+    
+}
+.roww{
+    text-align: center;
+    display: flex;
+}
+.empp{
+    color:rgb(40, 7, 189);
+    font-weight: bold;
+
+}
+.warn{
+
+    color: red;
+}
+.empp1{
+    color:rgb(128, 0, 90);
+    font-weight: bold;
+    
+}
+.appointmentHead{
+  font-size: 30px;
+  color: rgb(194, 107, 8);
+  font-style: oblique;
+  font-weight: bold;
+  text-align: center;
+}

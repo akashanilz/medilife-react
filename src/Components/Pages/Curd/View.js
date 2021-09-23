@@ -75,12 +75,12 @@ function View(props) {
         console.log(response.data)
       })
     }
-    if (props.curd === "client") {
+    if (props.curd === "driver") {
       const token = JSON.parse(localStorage.getItem("token"))
       const config = {
         headers: { Authorization: `Bearer ${token.token} ` }
       };
-      axios.get("dashboard/alldrivers", config).then((response) => {
+      axios.get("dashboard/allDrivers", config).then((response) => {
         setShimmer(false)
         if(response.data.length ===0){
           setEmpty(true)
@@ -104,6 +104,32 @@ function View(props) {
             label: 'Yes',
             onClick: () => 
             axios.delete(`/dashboard/deleteEmployee/${e}`,config).then((response)=>{
+              console.log(response.data)
+              getData()
+              deleteNotify()
+            })
+          },
+          {
+            label: 'No',
+            onClick: () => getData()
+          }
+        ]
+      });
+    
+    }
+    if(props.curd==="driver"){
+      const token = JSON.parse(localStorage.getItem("token"))
+      const config = {
+        headers: { Authorization: `Bearer ${token.token} ` }
+      };
+      confirmAlert({
+        title: 'Confirm to delete',
+        message: 'Are you sure to do delete.',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => 
+            axios.delete(`/dashboard/deleteDriver/${e}`,config).then((response)=>{
               console.log(response.data)
               getData()
               deleteNotify()
@@ -152,16 +178,16 @@ function View(props) {
         state: { id: id }
       });
     }
-    if(props.curd==="client"){
+    if(props.curd==="driver"){
       history.push({
-        pathname: `/dashboard/updateClient/${id}`,
+        pathname: `/dashboard/updateDriver/${id}`,
         state: { id: id }
       });
     }
   }
   return (
     <div className="bg-white">
-      <Header />
+      {/* <Header /> */}
 
       <div className="bg-white pt-2">
         { props.curd == "client" && <div className=" pl-8 pt-3 space-x-14 pb-3">
@@ -170,10 +196,13 @@ function View(props) {
         { props.curd == "employee" && <div className=" pl-8 pt-3 space-x-14 pb-3">
           <button onClick={() => { history.push('/dashboard/createEmployee') }} className="btn btn-success ">Add Employee</button>
         </div>}
-        {clients.length != 0 && props.curd == "client" && <h1 className="text-center pb-3">Clients</h1>}
-        {clients.length != 0 && props.curd == "employee" && <h1 className="text-center pb-3">Employees</h1>}
-        { empty && props.curd == "employee" && <h1 className="text-center pb-3">No Employees</h1>}
-        { empty && props.curd == "client" && <h1 className="text-center pb-3">No Clients</h1>}
+        { props.curd == "driver" && <div className=" pl-8 pt-3 space-x-14 pb-3">
+          <button onClick={() => { history.push('/dashboard/createDriver') }} className="btn btn-success ">Add Driver</button>
+        </div>}
+        {clients.length != 0 && props.curd == "client" && <h1 className="head11 text-center pb-3">Clients</h1>}
+        {clients.length != 0 && props.curd == "employee" && <h1 className=" head11 text-center pb-3">Employees</h1>}
+        { empty && props.curd == "employee" && <h1 className=" head11 text-center pb-3">No Employees</h1>}
+        { empty && props.curd == "client" && <h1 className=" head11 text-center pb-3">No Clients</h1>}
         <Table className="responsive" striped bordered hover>
           {clients.length != 0 && <thead>
             <tr>

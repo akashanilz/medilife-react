@@ -1,4 +1,5 @@
-import { BrowserRouter as Router,Route,Link } from 'react-router-dom';
+import { BrowserRouter as Router,Route,Link  } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router'
 import ViewClient from './Components/Dashboard/Clients/ViewClients';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Home from './Components/Home/Home';
@@ -11,11 +12,31 @@ import EditEmployee from './Components/Dashboard/Employee/EditEmployee';
 import ViewEmployees from './Components/Dashboard/Employee/ViewEmployees';
 import CreateAppointment from './Components/Dashboard/Appointment/CreateAppointment';
 import ViewAppointment from './Components/Dashboard/Appointment/ViewAppointment';
+import CreateDriver from './Components/Dashboard/Driver/CreateDriver';
+import ViewDriver from './Components/Dashboard/Driver/ViewDriver';
+import Header from './Components/Dashboard/Header/Header';
+import Footer from './Components/Footer/Footer';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import UpdateDriver from './Components/Dashboard/Driver/UpdateDriver';
 
-function App() {
+function App(props) {
+ // this.toggleAlert = this.toggleAlert.bind(this);
+  const [auth, setAuth] = useState(false)
+  useEffect(() => {
+    //console.log(props.location.pathname)
+    if (localStorage.getItem("token")) {
+      setAuth(true)
+    }
+  }, [])
+ // const location = useLocation()
+ const location = useLocation
+
   return (
     <div  className="bg-white min-h-screen">
+     
         <Router>
+      {/* { auth &&  <Header/> } */}
           <Route exact path="/">
             <Home></Home>
           </Route>
@@ -43,6 +64,15 @@ function App() {
           <Route  path="/dashboard/viewEmployees">
           <ProtectedRoutes routes={ViewEmployees}/>
           </Route>
+          <Route  path="/dashboard/createDriver">
+          <ProtectedRoutes routes={CreateDriver}/>
+          </Route>
+          <Route  path="/dashboard/ViewDrivers">
+          <ProtectedRoutes routes={ViewDriver}/>
+          </Route>
+          <Route  path="/dashboard/updateDriver/:id">
+          <ProtectedRoutes routes={UpdateDriver}/>
+          </Route>
           <Route  path="/dashboard/createAppointment">
           <ProtectedRoutes routes={CreateAppointment}/>
           </Route>
@@ -50,6 +80,7 @@ function App() {
           <ProtectedRoutes routes={ViewAppointment}/>
           </Route>
         </Router>
+         <Footer/>
     </div>
   );
 }

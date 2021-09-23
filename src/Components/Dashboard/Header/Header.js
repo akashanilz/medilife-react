@@ -9,31 +9,38 @@ function classNames(...classes) {
   }
 function Header() {
   const [auth, setAuth] = useState('')
+  const [hide, setHide] = useState(false)
   useEffect(() => {
     if(!localStorage.getItem("token")){
       history.push('/login')
     }else{
-      const token = JSON.parse(localStorage.getItem("token"))
-      const config = {
-        headers: { Authorization: `Bearer ${token.token} `}
-    };
-      axios.get("dashboard", config).then((response)=>{
-        setAuth(response.data)
-        console.log(response.data)
-        })
+     
+      getData()
        
        
     }
     
   }, [])
+  function getData(){
+    const token = JSON.parse(localStorage.getItem("token"))
+    const config = {
+      headers: { Authorization: `Bearer ${token.token} `}
+  };
+    axios.get("dashboard", config).then((response)=>{
+      setAuth(response.data)
+      setHide(true)
+      console.log(response.data)
+      })
+  }
   console.log(auth.role)
+
   const history = useHistory()
     const navigation = [ 
       { name: 'Dashboard', to: '/dashboard', current: true },
       { name: 'Employees', to: '/dashboard/viewEmployees', current: false },
-      { name: 'Clients', to: '/dashboard/viewClients', current: false },
+      // { name: 'Clients', to: '/dashboard/viewClients', current: false },
       
-    ]
+    ] 
     const navigation1 = [ 
       { name: 'Dashboard', to: '/dashboard', current: true },
       
@@ -73,7 +80,7 @@ function Header() {
                />
              </div>
              <div className="hidden sm:block sm:ml-6">
-               {auth.role===1 &&<div className="flex space-x-4">
+               {auth.role===1 && hide &&<div className="flex space-x-4">
                  {navigation.map((item) => (
                    <Link
                      key={item.name}
@@ -144,6 +151,7 @@ function Header() {
                      {({ active }) => (
                        <p
                          onClick={()=>{
+                           setHide(false)
                            localStorage.clear()
                            history.push("/")
                          }}

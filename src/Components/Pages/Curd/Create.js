@@ -21,6 +21,8 @@ function Create(props) {
   const [password, setPassword] = useState('')
   const [age, setAge] = useState('')
   const [designation, setDesignation] = useState('')
+  const [serverError, setServerError] = useState(false)
+  const [error, setError] = useState('')
   const history = useHistory();
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -76,8 +78,11 @@ function Create(props) {
     }
 
   }
+  
   const createEmployee = (e) => {
     e.preventDefault();
+    setError(false)
+    setServerError(false)
     const token = JSON.parse(localStorage.getItem("token"))
     const config = {
       headers: { Authorization: `Bearer ${token.token} ` }
@@ -92,7 +97,7 @@ function Create(props) {
       designation: designation,
       age: age,
       password: password,
-      location_id: location_id,
+     
     }
     console.log(data)
     axios.post('/dashboard/createEmployee',data,config).then((response)=>{
@@ -102,34 +107,75 @@ function Create(props) {
         state:"success"
       })
     }).catch(err => {
+      setError(err.response.data.validation_error)
       console.log(err.response.status)
+      if(err.response.status===500){
+        setServerError(true)
+      }
+      if(err.response.status===401){
+        
+      }
     })
-    if (props.curd == "client") {
-      axios.post('dashboard/createEmployee', data, config).then((response) => {
-        console.log(response.data)
-        history.push('/dashboard')
-      }).catch(err => {
-        console.log(err.code)
-      })
+
+  }
+  const createDriver = (e) => {
+    e.preventDefault();
+    setError(false)
+    setServerError(false)
+    const token = JSON.parse(localStorage.getItem("token"))
+    const config = {
+      headers: { Authorization: `Bearer ${token.token} ` }
+    };
+    const data = {
+      name: name,
+      email: email,
+      mobile: mobile,
+      address: address,
+      dob: dob,
+      doj: doj,
+      age: age,
+      password: password
+      
     }
+    console.log(data)
+    axios.post('/dashboard/createDriver',data,config).then((response)=>{
+      
+      history.push({
+        pathname:'/dashboard/viewDrivers',
+        state:"success"
+      })
+    }).catch(err => {
+      setError(err.response.data.validation_error)
+      console.log(err.response.data.validation_error)
+      if(err.response.status===500){
+        setServerError(true)
+      }
+      if(err.response.status===401){
+        //setError(true)
+      }
+    })
 
   }
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
 
       {auth && props.curd==="client" && <h1 className="text-center italic  pt-4">Add client</h1>}
       {auth && props.curd==="employee" && <h1 className="text-center pt-4">Add Employee</h1>}
+      {auth && props.curd==="driver" && <h1 className="text-center pt-4">Add Driver</h1>}
       {auth && props.curd==="appointment" && <h1 className="text-center pt-4">Create Appointment</h1>}
+      {serverError && <p className="serverError">Server Error</p> }
      { props.curd==="client" && <div>
      {auth ? <Form onSubmit={createClient} className="col-sm-6 offset-sm-3 py-8 pl-7 pr-5">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Name</label>
           <input type="text" required value={name} onChange={(e) => { setName(e.target.value) }} name="name" className="form-control" placeholder="Full Name" id="" />
-        </Form.Group>
+     
+        </Form.Group> 
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Email</label>
           <input type="text" name="email" required value={email} onChange={(e) => { setEmail(e.target.value) }} className="form-control" placeholder="Email Address" id="" />
+         
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Mobile</label>
@@ -204,14 +250,17 @@ function Create(props) {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Name</label>
           <input type="text" required value={name} onChange={(e) => { setName(e.target.value) }} name="name" className="form-control" placeholder="Full Name" id="" />
+          {error.name && <p className="error1"> {error.name}</p> }
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Email</label>
           <input type="text" name="email" required value={email} onChange={(e) => { setEmail(e.target.value) }} className="form-control" placeholder="Email Address" id="" />
+          {error.email && <p className="error1"> {error.email}</p> }
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Mobile</label>
           <input type="number" name="mobile" required value={mobile} onChange={(e) => { setMobile(e.target.value) }} className="form-control" placeholder="Mobile Number" id="" />
+          {error.mobile && <p className="error1"> {error.mobile}</p> }
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Address</label>
@@ -220,6 +269,7 @@ function Create(props) {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Password</label>
           <input type="password" name="password" required value={password} onChange={(e) => { setPassword(e.target.value) }} className="form-control" placeholder="password" id="" />
+          {error.password && <p className="error1"> {error.password}</p> }
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Date of Join</label>
@@ -233,7 +283,7 @@ function Create(props) {
           <label>Age</label>
           <input type="number" name="age" required value={age} onChange={(e) => { setAge(e.target.value) }} className="form-control" placeholder="Age" id="" />
         </Form.Group>
-        <Form.Group className="mb-3" aria-label="Default select example">
+        {/* <Form.Group className="mb-3" aria-label="Default select example">
       <select name="location" value={location_id} onChange={(e)=>{setLocation_id(e.target.value)}} className="form-control" id="">
   <option>Select</option>
   {
@@ -242,7 +292,7 @@ function Create(props) {
     )
   }
       </select>
-</Form.Group>
+</Form.Group> */}
 <Form.Group className="mb-3" aria-label="Default select example">
       <select name="designation" value={designation} onChange={(e)=>{setDesignation(e.target.value)}} className="form-control" id="">
   <option value="">Select</option>
@@ -310,84 +360,58 @@ function Create(props) {
       }
       
       </div> }
-      { props.curd==="appointment" && <div>
-     {auth ? <Form  className="col-sm-6 offset-sm-3 py-8 pl-7 pr-5">
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Remark</label>
-          <input type="text" required  onChange={(e) => { setName(e.target.value) }}  className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Nurse</label>
-          <input type="text" name="" required  onChange={(e) => { setEmail(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Driver</label>
-          <input type="text" name="" required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Time</label>
-          <input type="time" name="" required  onChange={(e) => { setAddress(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Location</label>
-          <input type="text" name="" required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Whatsapp No</label>
-          <input type="number"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Contact no</label>
-          <input type="number" required value={mobile} onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
+     
+      { props.curd==="driver" && <div>
+     {auth ?  <Form onSubmit={createDriver} className="col-sm-6 offset-sm-3 py-8 pl-7 pr-5">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Name</label>
-          <input type="text"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
+          <input type="text" required value={name} onChange={(e) => { setName(e.target.value) }} name="name" className="form-control" placeholder="Full Name" id="" />
+          {error.name && <p className="error1"> {error.name}</p> }
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Building Name</label>
-          <input type="text"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
+          <label>Email</label>
+          <input type="text" name="email" required value={email} onChange={(e) => { setEmail(e.target.value) }} className="form-control" placeholder="Email Address" id="" />
+          {error.email && <p className="error1"> {error.email}</p> }
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Room no</label>
-          <input type="text"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
+          <label>Mobile</label>
+          <input type="number" name="mobile" required value={mobile} onChange={(e) => { setMobile(e.target.value) }} className="form-control" placeholder="Mobile Number" id="" />
+          {error.mobile && <p className="error1"> {error.mobile}</p> }
         </Form.Group>
-        <Form.Group className="mb-3" aria-label="Default select example">
-        <label>TAT</label>
-      <select name="" className="form-control" id="">
-     
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <label>Address</label>
+          <input type="text" name="address" required value={address} onChange={(e) => { setAddress(e.target.value) }} className="form-control" placeholder="Address" id="" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <label>Password</label>
+          <input type="password" name="password" required value={password} onChange={(e) => { setPassword(e.target.value) }} className="form-control" placeholder="password" id="" />
+          {error.password && <p className="error1"> {error.password}</p> }
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <label>Date of Join</label>
+          <input type="date" name="doj" required value={doj} onChange={(e) => { setDoj(e.target.value) }} className="form-control" placeholder="" id="" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <label>Date of Birth</label>
+          <input type="date" name="dob" required value={dob} onChange={(e) => { setDob(e.target.value) }} className="form-control" placeholder="" id="" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <label>Age</label>
+          <input type="number" name="age" required value={age} onChange={(e) => { setAge(e.target.value) }} className="form-control" placeholder="Age" id="" />
+        </Form.Group>
+        {/* <Form.Group className="mb-3" aria-label="Default select example">
+      <select name="location" value={location_id} onChange={(e)=>{setLocation_id(e.target.value)}} className="form-control" id="">
   <option>Select</option>
-  <option value="1">3</option>
-  <option value="2">6</option>
-  <option value="3">12</option>
+  {
+    locations.map((item,key) =>
+    <option value={item.id}>{item.name}</option>
+    )
+  }
       </select>
-</Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>No of test</label>
-          <input type="number"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Cost/Test</label>
-          <input type="number" required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Net Amount</label>
-          <input type="number"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Card/Cash</label>
-          <input type="text"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Sales office</label>
-          <input type="text"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <label>Detail Sent Team</label>
-          <input type="text"  required  onChange={(e) => { setMobile(e.target.value) }} className="form-control"  id="" />
-        </Form.Group>
+</Form.Group> */}
+
         <div className="text-center pt-2">
-          <Button variant="primary" disabled={true} type="submit">
+          <Button variant="primary" type="submit">
             Submit
           </Button>
         </div>
@@ -446,7 +470,6 @@ function Create(props) {
       }
       
       </div> }
-   
     </div>
   )
 }

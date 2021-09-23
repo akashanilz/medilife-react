@@ -8,7 +8,7 @@ function Update(props) {
   const [data, setData] = useState('')
   const [details, setDetails] = useState('')
   const [auth, setAuth] = useState('')
-  const [name, setName] = useState('')
+  const [name, setName] = useState(data.name)
   const [email, setEmail] = useState('')
   const [mobile, setMobile] = useState('')
   const [address, setAddress] = useState('')
@@ -124,11 +124,12 @@ function Update(props) {
     <div>
     
       <Form onSubmit={update} autoComplete={false} className="col-sm-6 offset-sm-3 py-8 pl-7 pr-5">
+        <p>{name}</p>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <input type="hidden" name="email" id="" />
           <label>Name</label>
           <input type="text" required defaultValue={data.name} onChange={(e) => { setName(e.target.value) }} name="name" className="form-control" placeholder="Full Name" id="" />
-          {error.name && <p className="error1"> {error.name}</p> }
+         
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <label>Email</label>

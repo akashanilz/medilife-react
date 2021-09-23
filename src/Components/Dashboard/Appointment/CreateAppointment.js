@@ -424,7 +424,7 @@ function CreateAppointment(props) {
                                         <label htmlFor="lastName">ID Type</label>
                                         <Form.Select name="id_type" value={inputField.id_type} onChange={event => handleInputChange(index, event)} required id=""  >
                                             <option value="">Select</option>
-                                            <option value="Emerated ID">Emerates Id</option>
+                                            <option value="Emirates ID">Emirates Id</option>
                                             <option value="Passport">Passport</option>
                                         </Form.Select>
                                     </div>

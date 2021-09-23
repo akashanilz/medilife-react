@@ -1,9 +1,12 @@
 import axios from '../../axios'
 import React, { useEffect, useState } from 'react'
-import { Table } from 'react-bootstrap'
+import { Table} from 'react-bootstrap'
 import Header from '../Header/Header'
 import './Appointment.css'
-function ViewAppointment() {
+import { confirmAlert } from 'react-confirm-alert'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
+function View(props) {
      useEffect(() => {
          
      }, [])
@@ -17,14 +20,67 @@ function ViewAppointment() {
    const [appointment, setAppointment] = useState([])
   
     function getData(){
-        const token = JSON.parse(localStorage.getItem("token"))
-        const config = {
-          headers: { Authorization: `Bearer ${token.token} ` }
-        };
-        axios.get('dashboard/allAppointments',config).then((response)=>{
-            console.log(response.data)
-         setAppointment(response.data);
-        })
+        if(props.curd==="notconfirmed"){
+            const token = JSON.parse(localStorage.getItem("token"))
+            const config = {
+              headers: { Authorization: `Bearer ${token.token} ` }
+            };
+            axios.get('dashboard/appointmentsNotConfirmed',config).then((response)=>{
+                console.log(response.data)
+             setAppointment(response.data);
+            })
+        }
+        if(props.curd==="scheduled"){
+            const token = JSON.parse(localStorage.getItem("token"))
+            const config = {
+              headers: { Authorization: `Bearer ${token.token} ` }
+            };
+            axios.get('dashboard/appointmentsConfirmed',config).then((response)=>{
+                console.log(response.data)
+             setAppointment(response.data);
+            })
+        }
+     
+    }
+    const confirmNotify = () => toast('👍 Appointment Confirmed !', {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    function confirmAppointment(e){
+        if(props.curd==="notconfirmed"){
+            const token = JSON.parse(localStorage.getItem("token"))
+            const config = {
+              headers: { Authorization: `Bearer ${token.token} ` }
+            };
+         
+            confirmAlert({
+              title: 'Confirm Appointment',
+              message: 'Shedule this appointment.',
+              buttons: [
+                {
+                  label: 'Yes',
+                  onClick: () => 
+                  axios.get(`/dashboard/confirmAppointment/${e}`, config).then((response)=>{
+                    confirmNotify()
+                    getData()
+                    
+                 })
+                },
+                {
+                  label: 'No',
+                  onClick: () => getData()
+                }
+              ]
+            });
+           
+        }
+     
+    
     }
     return (
         <div>
@@ -52,7 +108,8 @@ function ViewAppointment() {
                 <td>{e.time.time}</td>
                 <td>{e.employee.name}</td>
                 <td>{e.driver.name}</td>
-                <td><button className="btn btn-success">Confirm</button></td>
+                {props.curd==="notconfirmed" && <td><button onClick={()=>confirmAppointment(e.id)} className="btn btn-success">Confirm</button></td>}
+                {props.curd==="scheduled" &&  <td><button  className="btn btn-primary">View</button></td>}
               </tr>
                 )
            }
@@ -113,8 +170,9 @@ function ViewAppointment() {
           </div>
 
 }
+<ToastContainer />
         </div>
     )
 }
 
-export default ViewAppointment
+export default View

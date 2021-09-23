@@ -11,7 +11,7 @@ import CreateEmployee from './Components/Dashboard/Employee/CreateEmployee';
 import EditEmployee from './Components/Dashboard/Employee/EditEmployee';
 import ViewEmployees from './Components/Dashboard/Employee/ViewEmployees';
 import CreateAppointment from './Components/Dashboard/Appointment/CreateAppointment';
-import ViewAppointment from './Components/Dashboard/Appointment/ViewAppointment';
+import ConfirmAppointment from './Components/Dashboard/Appointment/ConfirmAppointment';
 import CreateDriver from './Components/Dashboard/Driver/CreateDriver';
 import ViewDriver from './Components/Dashboard/Driver/ViewDriver';
 import Header from './Components/Dashboard/Header/Header';
@@ -19,6 +19,7 @@ import Footer from './Components/Footer/Footer';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import UpdateDriver from './Components/Dashboard/Driver/UpdateDriver';
+import SheduledAppointment from './Components/Dashboard/Appointment/SheduledAppointment';
 
 function App(props) {
  // this.toggleAlert = this.toggleAlert.bind(this);
@@ -76,8 +77,11 @@ function App(props) {
           <Route  path="/dashboard/createAppointment">
           <ProtectedRoutes routes={CreateAppointment}/>
           </Route>
-          <Route  path="/dashboard/viewAppointment">
-          <ProtectedRoutes routes={ViewAppointment}/>
+          <Route  path="/dashboard/confirmAppointments">
+          <ProtectedRoutes routes={ConfirmAppointment}/>
+          </Route>
+          <Route  path="/dashboard/scheduledAppointments">
+          <ProtectedRoutes routes={SheduledAppointment}/>
           </Route>
         </Router>
          <Footer/>

@@ -9,7 +9,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
 function View(props) {
-  const notify = () => toast('😜 Successfully created!', {
+  const notify = () => toast('😜 Success!', {
     position: "top-right",
     autoClose: 4000,
     hideProgressBar: false,

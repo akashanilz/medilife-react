@@ -216,7 +216,7 @@ function Home(props) {
                             </div>
                             <div>
                                 <div className="text-xl font-medium text-black">Schedule Appointment</div>
-                                <p className="text-white-500  text-3xl font-bold"> </p>
+                                <p className="text-white-500  text-3xl font-bold">** </p>
                             </div>
 
                         </div>

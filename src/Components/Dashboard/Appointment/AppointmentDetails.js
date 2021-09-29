@@ -9,6 +9,9 @@ import { confirmAlert } from 'react-confirm-alert';
 function AppointmentDetails(props) {
   const history = useHistory();
     const [appointment, setAppointment] = useState([])
+    const [paymentType, setPaymentType] = useState('')
+    const [amount, setAmount] = useState('')
+    const [noOfTest, setNoOfTest] = useState('')
     const [driver, setDriver] = useState('')
     const [time, setTime] = useState('')
     const location = useLocation()
@@ -47,6 +50,23 @@ function AppointmentDetails(props) {
         setDriver(response.data.driver)
        setEmployee(response.data.employee)
         })
+    }
+    const handleSubmit = (e)=>{
+           e.preventDefault()
+           const data = {
+             number_of_test : noOfTest,
+             net_amount : amount,
+             payment_type : paymentType
+           }
+           console.log(data)
+           const token = JSON.parse(localStorage.getItem("token"))
+           const config = {
+             headers: { Authorization: `Bearer ${token.token} `}
+         };
+           axios.put(`/dashboard/editAppointment/${props.id}`,data, config ).then((response)=>{
+             getData()
+             notify()
+             })
     }
    function changeStatus(){
           
@@ -97,7 +117,7 @@ function AppointmentDetails(props) {
         <div>
                  <h1 className="head11">Appointment Details</h1>
             
-                 <Form >
+                 <Form onSubmit={handleSubmit} >
                      <div className="col-sm-6 offset-sm-3 py-8 pr-10  pl-10">
                      <Row className="pt-3"> 
                    <Col>
@@ -116,19 +136,44 @@ function AppointmentDetails(props) {
                    </Col>
                    <Col>
                    <label className="label" htmlFor="">Number of Test</label>
-                     <Form.Control readOnly value={appointment.number_of_test} />
+                   { appointment.disclosure =="1" ? <Form.Control readOnly value={appointment.number_of_test} /> :  <Form.Control defaultValue={appointment.number_of_test} onChange={(e)=>{setNoOfTest(e.target.value)}} /> }
+                
                    </Col>
                  </Row>
                  <Row className="pt-3">
                    <Col>
                    <label className="label" htmlFor="">Amount</label>
-                     <Form.Control readOnly value={appointment.net_amount} />
+                   { appointment.disclosure =="1" ? <Form.Control readOnly value={appointment.net_amount} /> :  <Form.Control defaultValue={appointment.net_amount}  onChange={(e)=>{setAmount(e.target.value)}} /> }
                    </Col>
                    <Col>
                    <label className="label" htmlFor="">Remark</label>
                      <Form.Control readOnly value={appointment.remark} />
                    </Col>
                  </Row>
+  {
+    appointment.disclosure =="0" &&                <Row>
+    <Col>
+    <Form.Group className="mb-3" controlId="formBasicEmail">
+         <label className="labelimp">Payment Type</label>
+         <Form.Select name="payment_type" defaultValue={appointment.payment_type}  onChange={(e) => { setPaymentType(e.target.value) }} required id=""  >
+                             <option value="">Select</option>
+                             <option value="Card">Card</option>
+                             <option value="Cash">Cash</option>
+                             <option value="Payment Link">Payment Link</option>
+                             <option value="Account Transfer">Account Transfer</option>
+                         </Form.Select>
+     </Form.Group>
+    </Col>
+  </Row>
+  }
+  <br />
+{ appointment.disclosure =="0" &&
+    <Row>
+    <Col>
+    <button className="btn btn-primary" type="submit">Submit</button>
+    </Col>
+  </Row>
+}
                  <br />
                  <h1 className="head11">Driver Details</h1>
                  <br />
@@ -171,7 +216,7 @@ function AppointmentDetails(props) {
                        <th>Alhasna Number</th>
                        <th>Building Name</th>
                        <th>Room Number</th>
-                     {appointment.disclosure =="0" &&  <th>Add Details</th> }
+                   <th>Add Details</th> 
                      </tr>
                    </thead>
                    <tbody>
@@ -186,7 +231,7 @@ function AppointmentDetails(props) {
                        <td>{e.client.alhasna_number}</td>
                        <td>{e.client.building_name}</td>
                        <td>{e.client.room_number}</td>
-                  { appointment.disclosure =="0" &&
+                  { e.client.alhasna =="no" ?
                     <div>
                           {e.client.status =="0" && <td><button type="button" onClick={()=>{history.push({
                         pathname:`/dashboard/viewTaskDetails/addClientCategory/${e.client.id}`,
@@ -197,7 +242,7 @@ function AppointmentDetails(props) {
                         state : props.id
                       })}} className="btn btn-warning">Edit</button></td> }
                     </div>
-                  }
+                : <td>Alhasna Exist</td>  }
                      </tr>
         
         )
@@ -211,7 +256,7 @@ function AppointmentDetails(props) {
                    
                       <br />
                            <div className="col-md-36 text-center">
-            <button onClick={()=>{history.push(`/dashboard/viewTaskDetails/createClient/${props.id}`)}} className=" btn btn-primary">Add Client</button>
+          { appointment.disclosure == "0" && <button onClick={()=>{history.push(`/dashboard/viewTaskDetails/createClient/${props.id}`)}} className=" btn btn-primary">Add Client</button>}
             </div>
                 </div>
                </Form>

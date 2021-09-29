@@ -4,6 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import { Link , useHistory} from 'react-router-dom'
 import axios from '../../axios'
+import './Header.css'
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
@@ -50,7 +51,8 @@ function Header() {
  
     return (
         <div>
-        <Disclosure as="nav" className="bg-gray-800 sticky">
+           <div class=" sticky top-0 z-50">
+        <Disclosure as="nav" className="bg-gray-800 ">
    {({ open }) => (
      <>
        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -111,6 +113,22 @@ function Header() {
                    </Link>
                  ))}
                </div>}
+               {auth.role===3 &&<div className="flex space-x-4">
+                 
+                 {navigation1.map((item) => (
+                   <Link
+                     key={item.name}
+                     to={item.to}
+                     className={classNames(
+                       item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                       'px-3 py-2 rounded-md text-sm font-medium no-underline'
+                     )}
+                     aria-current={item.current ? 'page' : undefined}
+                   >
+                     {item.name}
+                   </Link>
+                 ))}
+               </div>}
              </div>
            </div>
            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -121,11 +139,10 @@ function Header() {
                <div>
                  <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                    <span className="sr-only">Open user menu</span>
-                   <img
-                     className="h-8 w-8 rounded-full"
-                     src="https://img.icons8.com/nolan/50/administrator-male.png"
-                     alt=""
-                   />
+                   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#fffffc" class="bi bi-person-circle" viewBox="0 0 16 16">
+  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+</svg>
                  </Menu.Button>
                </div>
                <Transition
@@ -148,17 +165,21 @@ function Header() {
                      )}
                    </Menu.Item> */}
                    <Menu.Item>
+                 
                      {({ active }) => (
-                       <p
+               <div>
+                          <p className="profile">{auth.user.name}</p> 
+                          <p
                          onClick={()=>{
                            setHide(false)
                            localStorage.clear()
                            history.push("/")
                          }}
-                         className={classNames(active ? 'bg-gray-100 no-underline cursor-pointer'  : '', 'cursor-pointer block no-underline px-4 py-2 text-sm text-gray-700')}
+                         className={classNames(active ? 'bg-gray-100 no-underline cursor-pointer text-center'  : '', 'cursor-pointer block no-underline px-4 py-2 text-center text-sm text-gray-700')}
                        >
                          Sign out
                        </p>
+               </div>
 
                      )}
                    </Menu.Item>
@@ -187,9 +208,11 @@ function Header() {
            ))}
          </div>
        </Disclosure.Panel>
+
      </>
    )}
  </Disclosure>
+ </div>
      </div>
     )
 }

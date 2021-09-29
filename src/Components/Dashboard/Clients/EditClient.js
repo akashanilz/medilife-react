@@ -1,12 +1,15 @@
 import React from 'react'
-import { useParams } from 'react-router'
+import { useLocation, useParams } from 'react-router'
 import Update from '../../Pages/Curd/Update'
+import CategoryDetails from '../Appointment/CategoryDetails'
 
-function EditClient() {
+function EditClient(props) {
+   
     const id = useParams()
     return (
         <div>
-            <Update curd="client" id={id.id} />
+           
+            <CategoryDetails curd="edit"  />
         </div>
     )
 }

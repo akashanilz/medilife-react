@@ -62,10 +62,12 @@ function CreateAppointment(props) {
             driver:driver,
             location:location,
             employee:employee,
+            disclosure : paymentDone,
             time:time,
             date:date,
             clients: inputFields
           }
+          console.log(data)
           axios.post('dashboard/createAppointment',data,config).then((response)=>{
                 history.push({
                     pathname:"/dashboard",
@@ -98,6 +100,7 @@ function CreateAppointment(props) {
     const [costPerTest, setCostPerTest] = useState('')
     const [netAmount, setNetAmount] = useState('')
     const [paymentType, setPaymentType] = useState('')
+    const [paymentDone, setPaymentDone] = useState('')
     const [driverName, setDriverName] = useState('')
     const [employeeName, setEmployeeName] = useState('')
     const [empLength, setEmpLength] = useState(false)
@@ -486,6 +489,14 @@ function CreateAppointment(props) {
                                             <option value="">Select</option>
                                             <option value="Card">Card</option>
                                             <option value="Cash">Cash</option>
+                                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <label className="labelimp">Payment Done</label>
+                        <Form.Select name="tat" value={paymentDone}  onChange={(e) => { setPaymentDone(e.target.value) }} required id=""  >
+                                            <option value="">Select</option>
+                                            <option value="yes">yes</option>
+                                            <option value="no">no</option>
                                         </Form.Select>
                     </Form.Group>
                         </div>

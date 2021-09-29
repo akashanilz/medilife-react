@@ -160,10 +160,10 @@ function Create(props) {
     <div>
       {/* <Header /> */}
 
-      {auth && props.curd==="client" && <h1 className="text-center italic  pt-4">Add client</h1>}
-      {auth && props.curd==="employee" && <h1 className="text-center pt-4">Add Employee</h1>}
-      {auth && props.curd==="driver" && <h1 className="text-center pt-4">Add Driver</h1>}
-      {auth && props.curd==="appointment" && <h1 className="text-center pt-4">Create Appointment</h1>}
+      {auth && props.curd==="client" && <h1 className=" head11 text-center  italic  pt-4">Add client</h1>}
+      {auth && props.curd==="employee" && <h1 className=" head11 text-center pt-4">Add Employee</h1>}
+      {auth && props.curd==="driver" && <h1 className=" head11 text-center pt-4">Add Driver</h1>}
+      {auth && props.curd==="appointment" && <h1 className=" head11 text-center pt-4">Create Appointment</h1>}
       {serverError && <p className="serverError">Server Error</p> }
      { props.curd==="client" && <div>
      {auth ? <Form onSubmit={createClient} className="col-sm-6 offset-sm-3 py-8 pl-7 pr-5">
@@ -294,6 +294,7 @@ function Create(props) {
       </select>
 </Form.Group> */}
 <Form.Group className="mb-3" aria-label="Default select example">
+  <label htmlFor="">Employee Type</label>
       <select name="designation" value={designation} onChange={(e)=>{setDesignation(e.target.value)}} className="form-control" id="">
   <option value="">Select</option>
     <option value="Doctor">Doctor</option>

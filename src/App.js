@@ -20,6 +20,14 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import UpdateDriver from './Components/Dashboard/Driver/UpdateDriver';
 import SheduledAppointment from './Components/Dashboard/Appointment/SheduledAppointment';
+import ViewTask from './Components/Dashboard/Employee/ViewTask';
+import TaskDetails from './Components/Dashboard/Employee/TaskDetails';
+import CategoryDetails from './Components/Dashboard/Appointment/CategoryDetails';
+import AddClient from './Components/Dashboard/Clients/AddClient';
+import CreateNewClient from './Components/Dashboard/Appointment/CreateNewClient';
+import TaskCompleted from './Components/Dashboard/Employee/TaskCompleted';
+import Completed from './Components/Dashboard/Appointment/Completed';
+
 
 function App(props) {
  // this.toggleAlert = this.toggleAlert.bind(this);
@@ -82,6 +90,27 @@ function App(props) {
           </Route>
           <Route  path="/dashboard/scheduledAppointments">
           <ProtectedRoutes routes={SheduledAppointment}/>
+          </Route>
+          <Route  path="/dashboard/viewMyTasks">
+          <ProtectedRoutes routes={ViewTask}/>
+          </Route>
+          <Route exact path="/dashboard/viewTaskDetails/:id">
+          <ProtectedRoutes routes={TaskDetails}/>
+          </Route>
+          <Route  path="/dashboard/viewTaskDetails/addClientCategory/:id">
+          <ProtectedRoutes routes={AddClient}/>
+          </Route>
+          <Route  path="/dashboard/viewTaskDetails/updateClientCategory/:id">
+          <ProtectedRoutes routes={EditClient}/>
+          </Route>
+          <Route  path="/dashboard/viewTaskDetails/createClient/:id">
+          <ProtectedRoutes routes={CreateNewClient}/>
+          </Route>
+          <Route  path="/dashboard/viewCompletedTasks">
+          <ProtectedRoutes routes={TaskCompleted}/>
+          </Route>
+          <Route  path="/dashboard/viewCompletedAppointments">
+          <ProtectedRoutes routes={Completed}/>
           </Route>
         </Router>
          <Footer/>

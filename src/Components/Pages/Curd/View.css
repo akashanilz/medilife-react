@@ -12,6 +12,9 @@
   /* width */
   --form-width: 16rem;
 }
+.custom-ui{
+    background-color: aqua;
+}
 .head11{
     text-align: center;
     color: black;

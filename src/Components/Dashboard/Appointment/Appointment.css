@@ -12,6 +12,21 @@
   /* width */
   --form-width: 16rem;
 }
+.responsive{
+    overflow-x: auto;
+}
+.responsive::-webkit-scrollbar{
+    overflow-x: hidden;
+}
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+
+    overflow: auto;
+}
+tbody{
+    overflow-y: scroll;
+}
 .status1{
     color: red;
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router,Route,Link  } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { useHistory, useLocation } from 'react-router'
 import ViewClient from './Components/Dashboard/Clients/ViewClients';
 import Dashboard from './Components/Dashboard/Dashboard';
@@ -32,7 +32,7 @@ import SsfCreate from './Components/Dashboard/Appointment/SsfCreate';
 
 
 function App(props) {
- // this.toggleAlert = this.toggleAlert.bind(this);
+  // this.toggleAlert = this.toggleAlert.bind(this);
   const [auth, setAuth] = useState(false)
   useEffect(() => {
     //console.log(props.location.pathname)
@@ -40,89 +40,89 @@ function App(props) {
       setAuth(true)
     }
   }, [])
- // const location = useLocation()
- const location = useLocation
+  // const location = useLocation()
+  const location = useLocation
 
   return (
-    <div  className="bg-white min-h-screen">
-     
-        <Router>
-      {/* { auth &&  <Header/> } */}
-          <Route exact path="/">
-            <Home></Home>
-          </Route>
-          <Route  path="/login">
-            <Login></Login>
-          </Route>
-          <Route  exact path="/dashboard">
-            <ProtectedRoutes routes={Dashboard}/>
-          </Route>
-          <Route  path="/dashboard/createClient">
-          <ProtectedRoutes routes={CreateClient}/>
-          </Route>
-          <Route  path="/dashboard/updateClient/:id">
-          <ProtectedRoutes routes={EditClient}/>
-          </Route>
-          <Route  path="/dashboard/viewClients">
-          <ProtectedRoutes routes={ViewClient}/>
-          </Route>
-          <Route  path="/dashboard/createEmployee">
-          <ProtectedRoutes routes={CreateEmployee}/>
-          </Route>
-          <Route  path="/dashboard/updateEmployee/:id">
-          <ProtectedRoutes routes={EditEmployee}/>
-          </Route>
-          <Route  path="/dashboard/viewEmployees">
-          <ProtectedRoutes routes={ViewEmployees}/>
-          </Route>
-          <Route  path="/dashboard/createDriver">
-          <ProtectedRoutes routes={CreateDriver}/>
-          </Route>
-          <Route  path="/dashboard/ViewDrivers">
-          <ProtectedRoutes routes={ViewDriver}/>
-          </Route>
-          <Route  path="/dashboard/updateDriver/:id">
-          <ProtectedRoutes routes={UpdateDriver}/>
-          </Route>
-          <Route  path="/dashboard/createAppointment">
-          <ProtectedRoutes routes={CreateAppointment}/>
-          </Route>
-          <Route  path="/dashboard/confirmAppointments">
-          <ProtectedRoutes routes={ConfirmAppointment}/>
-          </Route>
-          <Route  path="/dashboard/scheduledAppointments">
-          <ProtectedRoutes routes={SheduledAppointment}/>
-          </Route>
-          <Route  path="/dashboard/viewMyTasks">
-          <ProtectedRoutes routes={ViewTask}/>
-          </Route>
-          <Route exact path="/dashboard/viewTaskDetails/:id">
-          <ProtectedRoutes routes={TaskDetails}/>
-          </Route>
-          <Route  path="/dashboard/viewTaskDetails/addClientCategory/:id">
-          <ProtectedRoutes routes={AddClient}/>
-          </Route>
-          <Route  path="/dashboard/viewTaskDetails/updateClientCategory/:id">
-          <ProtectedRoutes routes={EditClient}/>
-          </Route>
-          <Route  path="/dashboard/viewTaskDetails/createClient/:id">
-          <ProtectedRoutes routes={CreateNewClient}/>
-          </Route>
-          <Route  path="/dashboard/viewCompletedTasks">
-          <ProtectedRoutes routes={TaskCompleted}/>
-          </Route>
-          <Route  path="/dashboard/viewCompletedAppointments">
-          <ProtectedRoutes routes={Completed}/>
-          </Route>
-          <Route exact path="/dashboard/viewAppointment/:id">
-          <ProtectedRoutes routes={ViewAppointment}/>
-          </Route>
-          <Route exact path="/dashboard/viewAppointmentDetails/ssf-details/:id">
-          <ProtectedRoutes routes={SsfCreate}/>
-          </Route>
-        </Router>
-       
-         <Footer/>
+    <div className="bg-white min-h-screen">
+
+      <Router>
+        {/* { auth &&  <Header/> } */}
+        <Route exact path="/">
+          <Home></Home>
+        </Route>
+        <Route path="/login">
+          <Login></Login>
+        </Route>
+        <Route exact path="/dashboard">
+          <ProtectedRoutes routes={Dashboard} />
+        </Route>
+        <Route path="/dashboard/createClient">
+          <ProtectedRoutes routes={CreateClient} />
+        </Route>
+        <Route path="/dashboard/updateClient/:id">
+          <ProtectedRoutes routes={EditClient} />
+        </Route>
+        <Route path="/dashboard/viewClients">
+          <ProtectedRoutes routes={ViewClient} />
+        </Route>
+        <Route path="/dashboard/createEmployee">
+          <ProtectedRoutes routes={CreateEmployee} />
+        </Route>
+        <Route path="/dashboard/updateEmployee/:id">
+          <ProtectedRoutes routes={EditEmployee} />
+        </Route>
+        <Route path="/dashboard/viewEmployees">
+          <ProtectedRoutes routes={ViewEmployees} />
+        </Route>
+        <Route path="/dashboard/createDriver">
+          <ProtectedRoutes routes={CreateDriver} />
+        </Route>
+        <Route path="/dashboard/ViewDrivers">
+          <ProtectedRoutes routes={ViewDriver} />
+        </Route>
+        <Route path="/dashboard/updateDriver/:id">
+          <ProtectedRoutes routes={UpdateDriver} />
+        </Route>
+        <Route path="/dashboard/createAppointment">
+          <ProtectedRoutes routes={CreateAppointment} />
+        </Route>
+        <Route path="/dashboard/confirmAppointments">
+          <ProtectedRoutes routes={ConfirmAppointment} />
+        </Route>
+        <Route path="/dashboard/scheduledAppointments">
+          <ProtectedRoutes routes={SheduledAppointment} />
+        </Route>
+        <Route path="/dashboard/viewMyTasks">
+          <ProtectedRoutes routes={ViewTask} />
+        </Route>
+        <Route exact path="/dashboard/viewTaskDetails/:id">
+          <ProtectedRoutes routes={TaskDetails} />
+        </Route>
+        <Route path="/dashboard/viewTaskDetails/addClientCategory/:id">
+          <ProtectedRoutes routes={AddClient} />
+        </Route>
+        <Route path="/dashboard/viewTaskDetails/updateClientCategory/:id">
+          <ProtectedRoutes routes={EditClient} />
+        </Route>
+        <Route path="/dashboard/viewTaskDetails/createClient/:id">
+          <ProtectedRoutes routes={CreateNewClient} />
+        </Route>
+        <Route path="/dashboard/viewCompletedTasks">
+          <ProtectedRoutes routes={TaskCompleted} />
+        </Route>
+        <Route path="/dashboard/viewCompletedAppointments">
+          <ProtectedRoutes routes={Completed} />
+        </Route>
+        <Route exact path="/dashboard/viewAppointment/:id">
+          <ProtectedRoutes routes={ViewAppointment} />
+        </Route>
+        <Route exact path="/dashboard/viewAppointmentDetails/ssf-details/:id">
+          <ProtectedRoutes routes={SsfCreate} />
+        </Route>
+      </Router>
+
+      <Footer />
     </div>
   );
 }

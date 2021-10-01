@@ -1,10 +1,11 @@
 import axios from '../../axios'
 import React, { useEffect, useState } from 'react'
-import { Col, Form, Row } from 'react-bootstrap'
+import { Col, Form, Row, Button } from 'react-bootstrap'
 import { useHistory, useLocation, useParams } from 'react-router'
 import './Appointment.css'
 import { idCardURL } from '../../Constants/Constants'
-
+import { BeatLoader } from 'react-spinners';
+import { css } from "@emotion/react";
 function CategoryDetails(props) {
   const location = useLocation()
   const history = useHistory()
@@ -41,7 +42,13 @@ function CategoryDetails(props) {
   const [supervisorNameLabour, setSupervisorNameLabour] = useState('')
   const [supervisorContactNumberLabour, setSupervisorContactNumberLabour] = useState('')
 
-
+  const override = css`
+  display: block;
+  margin: 2 auto;
+  size:30;`;
+  let [loading, setLoading] = useState(true);
+  let [loader, setLoader] = useState(false);
+  let [color, setColor] = useState("blue");
   const id = useParams()
   useEffect(() => {
 
@@ -60,6 +67,7 @@ function CategoryDetails(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setLoader(true)
     const formData = new FormData();
     formData.append('sample_id', sampleId);
     formData.append('rack_number', rackNumber);
@@ -96,21 +104,23 @@ function CategoryDetails(props) {
       headers: { Authorization: `Bearer ${token.token} ` }
     };
     axios.post(`/dashboard/editClient/${id.id}`, formData, config).then((response) => {
-   if(props.role =="employee"){
-    history.push({
-        
-      pathname: `/dashboard/viewTaskDetails/${location.state}`,
-      state: "success"
-    })
-   }
-   if(props.role == "admin"){
-    history.push({
-        
-      pathname: `/dashboard/viewAppointment/${location.state}`,
-      state: "success"
-    })
-   }
-     
+      if (props.role == "employee") {
+        history.push({
+
+          pathname: `/dashboard/viewTaskDetails/${location.state}`,
+          state: "success"
+        })
+      }
+      if (props.role == "admin") {
+        history.push({
+
+          pathname: `/dashboard/viewAppointment/${location.state}`,
+          state: "success"
+        })
+      }
+
+    }).catch(err => {
+      setLoader(false)
     })
   }
 
@@ -188,7 +198,7 @@ function CategoryDetails(props) {
               <Row className="pt-3">
                 <Col>
                   <label className="label" htmlFor="">DOB</label>
-                  <Form.Control type="date" required value={dob} onChange={(e) => { setDob(e.target.value) }}  />
+                  <Form.Control type="date" required value={dob} onChange={(e) => { setDob(e.target.value) }} />
                 </Col>
                 <Col>
                   <label className="label" htmlFor="">Nationality</label>
@@ -203,9 +213,9 @@ function CategoryDetails(props) {
                 </Col>
                 <Col>
                   <label className="label" htmlFor="">City</label>
-                  <Form.Control  defaultValue={city} required onChange={(e) => { setCity(e.target.value) }} />
+                  <Form.Control defaultValue={city} required onChange={(e) => { setCity(e.target.value) }} />
                 </Col>
-             
+
               </Row>
               <Row className="pt-3">
                 <Col>
@@ -367,7 +377,7 @@ function CategoryDetails(props) {
               <Row className="pt-3">
                 <Col>
                   <label className="label" htmlFor="">DOB</label>
-                  <Form.Control type="date" defaultValue={client.dob} onChange={(e) => { setDob(e.target.value) }}  />
+                  <Form.Control type="date" defaultValue={client.dob} onChange={(e) => { setDob(e.target.value) }} />
                 </Col>
                 <Col>
                   <label className="label" htmlFor="">Nationality</label>
@@ -378,36 +388,36 @@ function CategoryDetails(props) {
               <Row className="pt-3">
                 <Col>
                   <label className="label" htmlFor="">City</label>
-                  <Form.Control  defaultValue={client.city} onChange={(e) => { setCity(e.target.value) }} />
+                  <Form.Control defaultValue={client.city} onChange={(e) => { setCity(e.target.value) }} />
                 </Col>
-              { props.role =="admin" &&
+                {props.role == "admin" &&
                   <Col>
-                  <label className="label" htmlFor="">MRN</label>
-                  <Form.Control required defaultValue={client.mrn} onChange={(e) => { setMrn(e.target.value) }} />
-                </Col>
-              }
+                    <label className="label" htmlFor="">MRN</label>
+                    <Form.Control required defaultValue={client.mrn} onChange={(e) => { setMrn(e.target.value) }} />
+                  </Col>
+                }
 
               </Row>
-        {
-          props.role =="admin" &&
-          <Row className="pt-3">
-          <Col>
-            <label className="label" htmlFor="">Sample ID</label>
-            <Form.Control  defaultValue={client.sample_id} onChange={(e) => { setSampleId(e.target.value) }}  />
-          </Col>
-          <Col>
-            <label className="label" htmlFor="">Rack Number</label>
-            <Form.Control required defaultValue={client.rack_number} onChange={(e) => { setRackNumber(e.target.value) }} />
-          </Col>
+              {
+                props.role == "admin" &&
+                <Row className="pt-3">
+                  <Col>
+                    <label className="label" htmlFor="">Sample ID</label>
+                    <Form.Control defaultValue={client.sample_id} onChange={(e) => { setSampleId(e.target.value) }} />
+                  </Col>
+                  <Col>
+                    <label className="label" htmlFor="">Rack Number</label>
+                    <Form.Control required defaultValue={client.rack_number} onChange={(e) => { setRackNumber(e.target.value) }} />
+                  </Col>
 
-        </Row>}
-        
-             {props.role=="admin" && <Row className="pt-3">
+                </Row>}
+
+              {props.role == "admin" && <Row className="pt-3">
                 <Col>
                   <label className="label" htmlFor="">AI (Additional Identifier)</label>
-                  <Form.Control  defaultValue={client.ai} onChange={(e) => { setAi(e.target.value) }} />
+                  <Form.Control defaultValue={client.ai} onChange={(e) => { setAi(e.target.value) }} />
                 </Col>
-              
+
               </Row>}
               <Row className="pt-3">
                 <Col>
@@ -429,15 +439,15 @@ function CategoryDetails(props) {
               <Row className="pt-3">
                 <Col>
                   <label className="label" htmlFor="">ID Image</label>
-                  <input onChange={(e) => { setImage(e.target.files[0]) }}  className="form-control" name="image" type="file" />
+                  <input onChange={(e) => { setImage(e.target.files[0]) }} className="form-control" name="image" type="file" />
                 </Col>
-             
-             { client.id_image &&
+
+                {client.id_image &&
                   <Col>
-                  <label className="label" htmlFor="">Image</label>
-                  <img src={ `${idCardURL+client.id_image}`}  onChange={(e)=>{setImage(e.target.files[0]) }} width="100"/>
-                 </Col>
-             }
+                    <label className="label" htmlFor="">Image</label>
+                    <img src={`${idCardURL + client.id_image}`} onChange={(e) => { setImage(e.target.files[0]) }} width="100" />
+                  </Col>
+                }
               </Row>
               <Row className="pt-3">
                 <Col>
@@ -574,7 +584,23 @@ function CategoryDetails(props) {
                 </div>
               }
               <br />
-              {client && <button className="btn btn-warning" type="submit">Submit</button>}
+
+              {client &&
+                <div>
+                  {
+                    loader ? <Button variant="secondary" disabled={true} >
+                      Submit
+                    </Button> :
+                      <Button variant="primary" type="submit">
+                        Submit
+                      </Button>
+                  }
+                </div>
+              }
+
+              <div className="flex justify-center">
+                {loader && <BeatLoader color={color} loading={loading} css={override} size={20} />}
+              </div>
             </div>
           </form>
         </div>
@@ -582,6 +608,7 @@ function CategoryDetails(props) {
     </div>
   )
 }
+
 
 export default CategoryDetails
 

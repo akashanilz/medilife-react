@@ -27,6 +27,8 @@ import AddClient from './Components/Dashboard/Clients/AddClient';
 import CreateNewClient from './Components/Dashboard/Appointment/CreateNewClient';
 import TaskCompleted from './Components/Dashboard/Employee/TaskCompleted';
 import Completed from './Components/Dashboard/Appointment/Completed';
+import ViewAppointment from './Components/Dashboard/Appointment/ViewAppointment';
+import SsfCreate from './Components/Dashboard/Appointment/SsfCreate';
 
 
 function App(props) {
@@ -112,7 +114,14 @@ function App(props) {
           <Route  path="/dashboard/viewCompletedAppointments">
           <ProtectedRoutes routes={Completed}/>
           </Route>
+          <Route exact path="/dashboard/viewAppointment/:id">
+          <ProtectedRoutes routes={ViewAppointment}/>
+          </Route>
+          <Route exact path="/dashboard/viewAppointmentDetails/ssf-details/:id">
+          <ProtectedRoutes routes={SsfCreate}/>
+          </Route>
         </Router>
+       
          <Footer/>
     </div>
   );

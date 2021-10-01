@@ -4,7 +4,7 @@ import CategoryDetails from '../Appointment/CategoryDetails'
 function AddClient() {
     return (
         <div>
-             <CategoryDetails curd="add"  />
+             <CategoryDetails curd="add" role="employee"  />
         </div>
     )
 }

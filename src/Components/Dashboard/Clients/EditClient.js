@@ -9,7 +9,7 @@ function EditClient(props) {
     return (
         <div>
            
-            <CategoryDetails curd="edit"  />
+            <CategoryDetails curd="edit" role="employee" />
         </div>
     )
 }

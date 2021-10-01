@@ -134,17 +134,39 @@ function AppointmentDetails(props) {
                    <label className="label" htmlFor="">Location</label>
                      <Form.Control readOnly value={appointment.location} />
                    </Col>
-                   <Col>
-                   <label className="label" htmlFor="">Number of Test</label>
-                   { appointment.disclosure =="1" ? <Form.Control readOnly value={appointment.number_of_test} /> :  <Form.Control defaultValue={appointment.number_of_test} onChange={(e)=>{setNoOfTest(e.target.value)}} /> }
-                
-                   </Col>
+                {
+                  props.curd!=="viewAppointment" && 
+                  <Col>
+                  <label className="label" htmlFor="">Number of Test</label>
+                  { appointment.disclosure =="1" ? <Form.Control readOnly value={appointment.number_of_test} /> :  <Form.Control defaultValue={appointment.number_of_test} onChange={(e)=>{setNoOfTest(e.target.value)}} /> }
+               
+                  </Col>
+                }
+                                   { props.curd =="viewAppointment" &&
+  
+  <Col>
+               <label className="label" htmlFor="">Number of test</label>
+                 <Form.Control readOnly value={appointment.number_of_test} />
+               </Col>
+
+}
                  </Row>
                  <Row className="pt-3">
-                   <Col>
+                   { props.curd!=="viewAppointment" && 
+                   
+                     <Col>
                    <label className="label" htmlFor="">Amount</label>
                    { appointment.disclosure =="1" ? <Form.Control readOnly value={appointment.net_amount} /> :  <Form.Control defaultValue={appointment.net_amount}  onChange={(e)=>{setAmount(e.target.value)}} /> }
                    </Col>
+                   }
+                   { props.curd =="viewAppointment" &&
+  
+      <Col>
+                   <label className="label" htmlFor="">Amount</label>
+                     <Form.Control readOnly value={appointment.net_amount} />
+                   </Col>
+
+}
                    <Col>
                    <label className="label" htmlFor="">Remark</label>
                      <Form.Control readOnly value={appointment.remark} />
@@ -152,10 +174,12 @@ function AppointmentDetails(props) {
                  </Row>
   {
     appointment.disclosure =="0" &&                <Row>
-    <Col>
+{ props.curd =="employeeViewTask" &&
+  
+        <Col>
     <Form.Group className="mb-3" controlId="formBasicEmail">
          <label className="labelimp">Payment Type</label>
-         <Form.Select name="payment_type" defaultValue={appointment.payment_type}  onChange={(e) => { setPaymentType(e.target.value) }} required id=""  >
+         <Form.Select name="payment_type"  defaultValue={appointment.payment_type}  onChange={(e) => { setPaymentType(e.target.value) }} required id=""  >
                              <option value="">Select</option>
                              <option value="Card">Card</option>
                              <option value="Cash">Cash</option>
@@ -164,10 +188,22 @@ function AppointmentDetails(props) {
                          </Form.Select>
      </Form.Group>
     </Col>
+    
+
+}
+
+{ props.curd =="viewAppointment" &&
+  <div>
+      <Col>
+                   <label className="label" htmlFor="">Payment Type</label>
+                     <Form.Control readOnly value={appointment.payment_type} />
+                   </Col>
+  </div>
+}
   </Row>
   }
   <br />
-{ appointment.disclosure =="0" &&
+{ appointment.disclosure =="0" && props.curd =="employeeViewTask" &&
     <Row>
     <Col>
     <button className="btn btn-primary" type="submit">Submit</button>
@@ -194,6 +230,30 @@ function AppointmentDetails(props) {
                    </Col>
                  
                  </Row>
+                 {props.curd=="viewAppointment" &&
+                      <div>
+                                <br />
+                              <h1 className="head11">Employee Details</h1>
+                              <br />
+                              <Row className="pt-3"> 
+                                <Col>
+                                <label className="label" htmlFor="">Employee Name</label>
+                                  <Form.Control readOnly value={employee.name} />
+                                </Col>
+                                <Col>
+                                <label className="label" htmlFor="">Employee Email</label>
+                                  <Form.Control readOnly value={employee.email} />
+                                </Col>
+                              </Row>
+                              <Row className="pt-3"> 
+                                <Col>
+                                <label className="label" htmlFor="">Employee Mobile</label>
+                                  <Form.Control readOnly value={employee.mobile} />
+                                </Col>
+                              
+                              </Row>
+                      </div>
+                 }
                      </div>
                      <br />
              
@@ -201,7 +261,7 @@ function AppointmentDetails(props) {
        
                  
                  
-               {appointment.disclosure =="1" && <p className="paydone">Payment Done</p>}
+               {appointment.disclosure =="1" && props.curd=="employeeViewTask"  && <p className="paydone">Payment Done</p>}
                 <div className="col-sm-6 offset-sm-3 py-8 pr-10  pl-10">
              
               
@@ -216,7 +276,8 @@ function AppointmentDetails(props) {
                        <th>Alhasna Number</th>
                        <th>Building Name</th>
                        <th>Room Number</th>
-                   <th>Add Details</th> 
+                  { props.curd=="employeeViewTask" && <th>Add Details</th> }
+                  {  props.curd=="viewAppointment" && <th>SSF Details</th> }
                      </tr>
                    </thead>
                    <tbody>
@@ -231,8 +292,10 @@ function AppointmentDetails(props) {
                        <td>{e.client.alhasna_number}</td>
                        <td>{e.client.building_name}</td>
                        <td>{e.client.room_number}</td>
-                  { e.client.alhasna =="no" ?
-                    <div>
+                 { props.curd=="employeeViewTask" &&
+                   <>
+                    { e.client.alhasna =="no" ?
+                         <>
                           {e.client.status =="0" && <td><button type="button" onClick={()=>{history.push({
                         pathname:`/dashboard/viewTaskDetails/addClientCategory/${e.client.id}`,
                         state : props.id
@@ -241,8 +304,22 @@ function AppointmentDetails(props) {
                         pathname : `/dashboard/viewTaskDetails/updateClientCategory/${e.client.id}`,
                         state : props.id
                       })}} className="btn btn-warning">Edit</button></td> }
-                    </div>
+                    </>
                 : <td>Alhasna Exist</td>  }
+                   </>
+                 }
+                     { props.curd=="viewAppointment" &&
+                      
+                         <td>
+                           <button onClick={()=>{
+                             history.push({
+                              pathname : `/dashboard/viewAppointmentDetails/ssf-details/${e.client.id}`,
+                              state : props.id
+                             })
+                           }} className="btn btn-danger">Add</button>
+                         </td>
+                      
+                     }
                      </tr>
         
         )
@@ -251,19 +328,23 @@ function AppointmentDetails(props) {
                  </Table>
                 
                    
-                         <p>{category}</p>
+                         {/* <p>{category}</p> */}
                  </div>
                    
                       <br />
                            <div className="col-md-36 text-center">
-          { appointment.disclosure == "0" && <button onClick={()=>{history.push(`/dashboard/viewTaskDetails/createClient/${props.id}`)}} className=" btn btn-primary">Add Client</button>}
+          { appointment.disclosure == "0" && props.curd=="employeeViewTask" && <button onClick={()=>{history.push(`/dashboard/viewTaskDetails/createClient/${props.id}`)}} className=" btn btn-primary">Add Client</button>}
             </div>
                 </div>
                </Form>
 
-                 
+                 { props.curd =="viewAppointment" &&
+                   <div className="col-md-36 text-center">
+                       <button className="btn btn-success">Download SSF</button>
+                   </div>
+                 }
              
-      <h1 className="head11">Update Status as</h1>
+    {props.curd!=="viewAppointment" &&   <h1 className="head11">Update Status as</h1>}
       <br />
     
                 <div className="col-md-36 text-center"> {  appointment &&

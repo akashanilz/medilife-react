@@ -188,6 +188,7 @@ function View(props) {
   }
   return (
     <div className="bg-white">
+      {clients.length == "0" && <h1 className="empty">Empty</h1>}
       {/* <Header /> */}
 
       <div className="bg-white pt-2">

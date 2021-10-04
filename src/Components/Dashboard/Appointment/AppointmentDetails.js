@@ -119,6 +119,7 @@ function AppointmentDetails(props) {
   }
   return (
     <div>
+       {appointment.length == 0 && <p className="empty">Empty</p>}
       <h1 className="head11">Appointment Details</h1>
 
       <Form onSubmit={handleSubmit} >

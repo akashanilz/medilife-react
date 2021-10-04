@@ -29,6 +29,7 @@ import TaskCompleted from './Components/Dashboard/Employee/TaskCompleted';
 import Completed from './Components/Dashboard/Appointment/Completed';
 import ViewAppointment from './Components/Dashboard/Appointment/ViewAppointment';
 import SsfCreate from './Components/Dashboard/Appointment/SsfCreate';
+import pageNotFound from './Components/pageNotFound';
 
 
 function App(props) {
@@ -120,6 +121,10 @@ function App(props) {
         <Route exact path="/dashboard/viewAppointmentDetails/ssf-details/:id">
           <ProtectedRoutes routes={SsfCreate} />
         </Route>
+        {/* <Route exact path="*" component={pageNotFound}/> */}
+         
+       
+      
       </Router>
 
       <Footer />

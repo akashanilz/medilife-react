@@ -57,6 +57,7 @@ function CategoryDetails(props) {
       headers: { Authorization: `Bearer ${token.token} ` }
     };
     axios.get(`/dashboard/viewClient/${id.id}`, config).then((response) => {
+      console.log(response.data)
       setClient(response.data.client)
       setClientCategory(response.data.client.client_category)
 
@@ -161,7 +162,7 @@ function CategoryDetails(props) {
 
   return (
     <div>
-
+ {client.length == 0 && <p className="empty">Empty</p>}
       {props.curd === "add" &&
         <div>
           <form onSubmit={handleSubmit}>

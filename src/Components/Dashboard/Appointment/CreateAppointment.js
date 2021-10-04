@@ -81,7 +81,7 @@ function CreateAppointment(props) {
             date: date,
             clients: inputFields
         }
-        //console.log(data)
+       // console.log(data)
         axios.post('dashboard/createAppointment', data, config).then((response) => {
             history.push({
                 pathname: "/dashboard",
@@ -535,10 +535,10 @@ function CreateAppointment(props) {
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <label className="labelimp">Payment Done</label>
-                                    <Form.Select name="tat" value={paymentDone} onChange={(e) => { setPaymentDone(e.target.value) }} required id=""  >
+                                    <Form.Select name="payment_done" value={paymentDone} onChange={(e) => { setPaymentDone(e.target.value) }} required id=""  >
                                         <option value="">Select</option>
-                                        <option value="yes">yes</option>
-                                        <option value="no">no</option>
+                                        <option value="1">yes</option>
+                                        <option value="0">no</option>
                                     </Form.Select>
                                 </Form.Group>
                             </div>

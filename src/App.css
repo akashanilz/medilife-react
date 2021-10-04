@@ -24,3 +24,20 @@
   font-style: oblique;
   font-size: 30px;
 }
+.notfound{
+ text-align: center;
+ padding-top: 70px;
+ color:rgb(163, 6, 6);
+ font-size: 150px;
+}
+.notfound1{
+  color: #0885b6;
+ 
+ }
+ .notfound2{
+ color: rgb(163, 6, 6);
+ }
+ .page{
+   text-align: center;
+   font-size: 25px;
+ }

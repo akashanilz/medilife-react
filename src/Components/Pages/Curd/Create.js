@@ -174,8 +174,8 @@ function Create(props) {
       {/* <Header /> */}
 
       {auth && props.curd === "client" && <h1 className=" head11 text-center  italic  pt-4">Add client</h1>}
-      {auth && props.curd === "employee" && <h1 className=" head11 text-center pt-4">Add Employee</h1>}
-      {auth && props.curd === "driver" && <h1 className=" head11 text-center pt-4">Add Driver</h1>}
+      {auth && props.curd === "employee" && <h1 className=" head11 text-center pt-4">Add Nurse</h1>}
+      {auth && props.curd === "driver" && <h1 className=" head11 text-center pt-4">Add Transporter</h1>}
       {auth && props.curd === "appointment" && <h1 className=" head11 text-center pt-4">Create Appointment</h1>}
       {serverError && <p className="serverError">Server Error</p>}
       {props.curd === "client" && <div>

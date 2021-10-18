@@ -8,8 +8,8 @@ import axios from '../../axios';
 import { BeatLoader } from 'react-spinners';
 import { css } from "@emotion/react";
 function CreateAppointment(props) {
-    const [count, setCount] = useState(1)
 
+    const [count, setCount] = useState(1)
     const override = css`
   display: block;
   margin: 2 auto;
@@ -67,6 +67,7 @@ function CreateAppointment(props) {
         const config = {
             headers: { Authorization: `Bearer ${token.token} ` }
         };
+        console.log(inputFields.length)
         const data = {
             remark: remark,
             number_of_test: inputFields.length,
@@ -81,15 +82,28 @@ function CreateAppointment(props) {
             date: date,
             clients: inputFields
         }
-       // console.log(data)
-        axios.post('dashboard/createAppointment', data, config).then((response) => {
-            history.push({
-                pathname: "/dashboard",
-                state: "success"
+        console.log(data)
+        if(props.curd!=="client"){
+            axios.post('dashboard/createAppointment', data, config).then((response) => {
+                history.push({
+                    pathname: "/dashboard",
+                    state: "success"
+                })
+            }).catch(err => {
+                setLoader(false)
             })
-        }).catch(err => {
-            setLoader(false)
-        })
+        }
+        if(props.curd=="client"){
+            axios.post(`dashboard/createAppointmentClient/${props.id}`, data, config).then((response) => {
+                history.push({
+                    pathname: "/dashboard",
+                    state: "success"
+                })
+            }).catch(err => {
+                setLoader(false)
+            })
+        }
+  
         //console.log(JSON.stringify(data, null, 2))
         // //console.log(JSON.stringify(inputFields, null, 2))
     };
@@ -104,6 +118,7 @@ function CreateAppointment(props) {
         values.splice(index, 1);
         setInputFields(values);
     };
+    const [app, setApp] = useState('')
     const [firstAuth, setFirstAuth] = useState(false)
     const [secondAuth, setSecondAuth] = useState(false)
     const [thirdAuth, setThirdAuth] = useState(false)
@@ -139,7 +154,7 @@ function CreateAppointment(props) {
     const [designation, setDesignation] = useState('')
     const history = useHistory();
     useEffect(() => {
-
+         
         if (!localStorage.getItem("token")) {
             history.push('/login')
         } else {
@@ -151,7 +166,8 @@ function CreateAppointment(props) {
 
 
     function getData() {
-
+      
+      if(props.curd!="client"){
         const token = JSON.parse(localStorage.getItem("token"))
         const config = {
             headers: { Authorization: `Bearer ${token.token} ` }
@@ -168,6 +184,43 @@ function CreateAppointment(props) {
         }).catch(err => {
             //console.log(err)
         })
+      }
+        if(props.curd=="client"){
+            const token = JSON.parse(localStorage.getItem("token"))
+            const config = {
+                headers: { Authorization: `Bearer ${token.token} ` }
+            };
+            axios.get(`dashboard/findAppointment/${props.id}`, config).then((response) => {
+            setApp(response.data.appointment)
+            setLocation(app.location)
+                setTimeList(response.data);
+                setFirstAuth(false)
+                setThirdAuth(true)
+               setEmployeeName(response.data.employee)
+               setDriverName(response.data.driver)
+                setShimmer(true)
+            }).catch(err => {
+                //console.log(err)
+            })
+        }
+    }
+    function schedule (){
+        const data={
+            date:date
+        }
+       
+            const token = JSON.parse(localStorage.getItem("token"))
+            const config = {
+                headers: { Authorization: `Bearer ${token.token} ` }
+            };
+            axios.post('dashboard/createAppointment', data, config).then((response) => {
+                history.push({
+                    pathname: "/dashboard",
+                    state: "success"
+                })
+            }).catch(err => {
+                setLoader(false)
+            })
     }
     return (
         <div>
@@ -178,45 +231,48 @@ function CreateAppointment(props) {
                         setEmpLength(false)
                         setDriLength(false)
                         setSlot(false)
+                        setThirdAuth(true)
+                        setFirstAuth(false)
+                        setThirdAuth(true)
                         e.preventDefault()
-                        const data = {
-                            date: date,
-                            time: time
-                        }
-                        const token = JSON.parse(localStorage.getItem("token"))
-                        const config = {
-                            headers: { Authorization: `Bearer ${token.token} ` }
-                        };
-                        axios.post('dashboard/getFreeUsers', data, config).then((response) => {
-                            //console.log(response.data)
-                            setDriverList(response.data.driver)
+                        // const data = {
+                        //     date: date,
+                        //     time: time
+                        // }
+                        // const token = JSON.parse(localStorage.getItem("token"))
+                        // const config = {
+                        //     headers: { Authorization: `Bearer ${token.token} ` }
+                        // };
+                        // axios.post('dashboard/getFreeUsers', data, config).then((response) => {
+                        //     //console.log(response.data)
+                        //     setDriverList(response.data.driver)
 
-                            setEmployeeList(response.data.employee)
-                            //console.warn(response.data.driver.length)
-                            //console.warn(response.data.employee.length)
-                            if (response.data.employee.length === 0) {
-                                setEmpLength(true)
-                                //console.warn("added")
-                                setSlot(true)
-                            }
-                            if (response.data.driver.length === 0) {
-                                setDriLength(true)
-                                //console.warn(" second added")
-                                setSlot(true)
-                            }
-                            setFirstAuth(false)
-                            setSecondAuth(true)
-                        })
+                        //     setEmployeeList(response.data.employee)
+                        //     //console.warn(response.data.driver.length)
+                        //     //console.warn(response.data.employee.length)
+                        //     if (response.data.employee.length === 0) {
+                        //         setEmpLength(true)
+                        //         //console.warn("added")
+                        //         setSlot(true)
+                        //     }
+                        //     if (response.data.driver.length === 0) {
+                        //         setDriLength(true)
+                        //         //console.warn(" second added")
+                        //         setSlot(true)
+                        //     }
+                        //     setFirstAuth(false)
+                        //     setSecondAuth(true)
+                        // })
 
                     }} className="col-sm-6 offset-sm-3 py-8 pl-7  pt-9 pr-5" >
-                        <p className="appointmentHead"> Select Date and Time Slot</p>
+                        <p className="appointmentHead"> Select Date </p>
                         <br />
                         <Row>
                             <Col>
                                 <label htmlFor="">Select Date</label>
                                 <input type="date" className="form-control" required name="date" value={date} onChange={(e) => { setDate(e.target.value) }} id="" />
                             </Col>
-                            <Col>
+                            {/* <Col>
                                 <label htmlFor="">Select Time Slot</label>
                                 <Form.Select required className="form-control" name="time" value={time} onChange={(e) => {
                                     setTime(e.target.value)
@@ -232,15 +288,18 @@ function CreateAppointment(props) {
                                     }
 
                                 </Form.Select>
-                            </Col>
+                            </Col> */}
                         </Row>
                         <Row className="col-sm-6 offset-sm-3 py-8 pl-7 pt-9 pr-5">
                             <button type="submit" className="btn btn-primary" >Next</button>
                         </Row>
+                        <Row className="col-sm-6 offset-sm-3 py-8 pl-7 pt-1 pr-5">
+                            <button onClick={schedule} type="button" className="btn btn-danger" >Create Slot</button>
+                        </Row>
                     </Form>
                 </div>}
                 {employeeList.le}
-                {secondAuth && <div>
+                {/* {secondAuth && <div>
 
                     <Form onSubmit={(e) => {
                         e.preventDefault()
@@ -308,7 +367,7 @@ function CreateAppointment(props) {
                         </Row>
 
                     </Form>
-                </div>}
+                </div>} */}
 
                 {thirdAuth &&
 
@@ -318,7 +377,7 @@ function CreateAppointment(props) {
 
                                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => {
                                     setThirdAuth(false)
-                                    setSecondAuth(true)
+                                    setFirstAuth(true)
                                 }} width="30" height="30" fill="currentColor" class="bi bi-skip-backward-fill" viewBox="0 0 16 16">
                                     <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5z" />
                                 </svg>
@@ -328,31 +387,36 @@ function CreateAppointment(props) {
                             <br />
 
                             <Row className="pt-3">
-                                <Col>
+                                {/* <Col>
                                     <label className="label" htmlFor="">Appointment Time</label>
                                     <Form.Control readOnly value={timeValue} />
-                                </Col>
-                                <Col>
+                                </Col> */}
+                               {props.curd!=="client" && <Col>
                                     <label className="label" htmlFor="">Appointment Date</label>
                                     <Form.Control readOnly value={date} />
-                                </Col>
+                                </Col> }
+                                {props.curd=="client" && <Col>
+                                    <label className="label" htmlFor="">Appointment Date</label>
+                                    <Form.Control readOnly value={app.date} />
+                                </Col> }
                             </Row>
 
-                            <Row className="pt-3">
+                           {props.curd=="client" && employeeName && driverName && <Row className="pt-3">
                                 <Col>
-                                    <label className="label" htmlFor="">Employee Name</label>
-                                    <Form.Control readOnly value={employeeName} />
+                                    <label className="label" htmlFor="">Nurse Name</label>
+                                    <Form.Control readOnly value={employeeName.name} />
                                 </Col>
                                 <Col>
-                                    <label className="label" htmlFor="">Driver Name</label>
-                                    <Form.Control readOnly value={driverName} />
+                                    <label className="label" htmlFor="">Transporter Name</label>
+                                    <Form.Control readOnly value={driverName.name} />
                                 </Col>
-                            </Row>
+                            </Row>}
 
                             {inputFields.map((inputField, index) => (
                                 <Fragment key={`${inputField}~${index}`}>
                                     <h1 className="heading1 pt-5">Client : {index + 1}</h1>
-                                    <Row>
+                       {props.curd=="client" &&
+                                        <Row>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="name">Name</label>
                                             <input required
@@ -376,10 +440,37 @@ function CreateAppointment(props) {
                                             />
                                         </div>
                                     </Row>
+                       } {
+                           props.curd!=="client" && 
+                           <Row>
+                           <div className="form-group col-sm-6 pt-4">
+                               <label htmlFor="name">Name</label>
+                               <input 
+                                   type="text"
+                                   className="form-control"
+                                   id="name"
+                                   name="name"
+                                   value={inputField.name}
+                                   onChange={event => handleInputChange(index, event)}
+                               />
+                           </div>
+                           <div className="form-group col-sm-6 pt-4">
+                               <label htmlFor="lastName">Email</label>
+                               <input 
+                                   type="text"
+                                   className="form-control"
+                                   id="email"
+                                   name="email"
+                                   value={inputField.email}
+                                   onChange={event => handleInputChange(index, event)}
+                               />
+                           </div>
+                       </Row>
+                       }
                                     <Row>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="firstName">Whatsapp Number</label>
-                                            <input required
+                                            <input 
                                                 type="number"
                                                 className="form-control"
                                                 id="whatsapp_number"
@@ -390,7 +481,7 @@ function CreateAppointment(props) {
                                         </div>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="lastName">Contact Number </label>
-                                            <input required
+                                            <input 
                                                 type="number"
                                                 className="form-control"
                                                 id="contact_number"
@@ -403,7 +494,7 @@ function CreateAppointment(props) {
                                     <Row>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="firstName">Building Name</label>
-                                            <input required
+                                            <input 
                                                 type="text"
                                                 className="form-control"
                                                 id="building_name"
@@ -414,7 +505,7 @@ function CreateAppointment(props) {
                                         </div>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="lastName">Room Number</label>
-                                            <input required
+                                            <input 
                                                 type="text"
                                                 className="form-control"
                                                 id="room_number"
@@ -425,7 +516,8 @@ function CreateAppointment(props) {
                                         </div>
                                     </Row>
                                     <Row>
-                                        <div className="form-group col-sm-6 pt-4">
+                                     { props.curd=="client" &&
+                                            <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="firstName">Alhasna</label>
                                             <Form.Select name="alhasna" value={inputField.alhasna} onChange={event => handleInputChange(index, event)} required id=""  >
                                                 <option value="">Select</option>
@@ -435,6 +527,19 @@ function CreateAppointment(props) {
                                             </Form.Select>
 
                                         </div>
+                                     }
+                                          { props.curd!=="client" &&
+                                            <div className="form-group col-sm-6 pt-4">
+                                            <label htmlFor="firstName">Alhasna</label>
+                                            <Form.Select name="alhasna" value={inputField.alhasna} onChange={event => handleInputChange(index, event)} id=""  >
+                                                <option value="">Select</option>
+                                                <option value="yes">Yes</option>
+                                                <option value="no">No</option>
+
+                                            </Form.Select>
+
+                                        </div>
+                                     }
                                         {inputField.alhasna == "yes" && <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="firstName">Alhasna Number</label>
                                             <input
@@ -451,7 +556,7 @@ function CreateAppointment(props) {
                                     <Row>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="firstName">TAT</label>
-                                            <Form.Select name="tat" value={inputField.tat} onChange={event => handleInputChange(index, event)} required id=""  >
+                                            <Form.Select name="tat" value={inputField.tat} onChange={event => handleInputChange(index, event)}  id=""  >
                                                 <option value="">Select</option>
                                                 <option value="3">3</option>
                                                 <option value="6">6</option>
@@ -462,10 +567,10 @@ function CreateAppointment(props) {
 
                                     </Row>
 
-                                    <Row>
+                                   {props.curd=="client" && <Row>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="lastName">ID Type</label>
-                                            <Form.Select name="id_type" value={inputField.id_type} onChange={event => handleInputChange(index, event)} required id=""  >
+                                            <Form.Select name="id_type" value={inputField.id_type} onChange={event => handleInputChange(index, event)} required  id=""  >
                                                 <option value="">Select</option>
                                                 <option value="Emirates ID">Emirates Id</option>
                                                 <option value="Passport">Passport</option>
@@ -473,7 +578,8 @@ function CreateAppointment(props) {
                                         </div>
                                         <div className="form-group col-sm-6 pt-4">
                                             <label htmlFor="firstName">ID Number</label>
-                                            <input required
+                                            <input 
+                                            required
                                                 type="text"
                                                 className="form-control"
                                                 id="id_number"
@@ -481,9 +587,32 @@ function CreateAppointment(props) {
                                                 value={inputField.id_number}
                                                 onChange={event => handleInputChange(index, event)}
                                             />
-                                        </div>
+                                        </div> 
 
-                                    </Row>
+                                    </Row> }
+                                    {props.curd!=="client" && <Row>
+                                        <div className="form-group col-sm-6 pt-4">
+                                            <label htmlFor="lastName">ID Type</label>
+                                            <Form.Select name="id_type" value={inputField.id_type} onChange={event => handleInputChange(index, event)}  id=""  >
+                                                <option value="">Select</option>
+                                                <option value="Emirates ID">Emirates Id</option>
+                                                <option value="Passport">Passport</option>
+                                            </Form.Select>
+                                        </div>
+                                        <div className="form-group col-sm-6 pt-4">
+                                            <label htmlFor="firstName">ID Number</label>
+                                            <input 
+                                           
+                                                type="text"
+                                                className="form-control"
+                                                id="id_number"
+                                                name="id_number"
+                                                value={inputField.id_number}
+                                                onChange={event => handleInputChange(index, event)}
+                                            />
+                                        </div> 
+
+                                    </Row> }
 
                                     <Row>
                                         <div className="form-group col-sm-2 pt-5">
@@ -505,7 +634,7 @@ function CreateAppointment(props) {
                             <div className="pt-5">
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <label className="labelimp" >Remark</label>
-                                    <input type="text" value={remark} required onChange={(e) => { setRemark(e.target.value) }} className="form-control" id="" />
+                                    <input type="text" value={remark}  onChange={(e) => { setRemark(e.target.value) }} className="form-control" id="" />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <label className="labelimp">No of test</label>
@@ -513,19 +642,28 @@ function CreateAppointment(props) {
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <label className="labelimp">Cost/Test</label>
-                                    <input type="number" value={costPerTest} required onChange={(e) => { setCostPerTest(e.target.value) }} className="form-control" id="" />
+                                    <input type="number" value={costPerTest}  onChange={(e) => { setCostPerTest(e.target.value) }} className="form-control" id="" />
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <label className="labelimp">Location</label>
-                                    <input type="text" value={location} required onChange={(e) => { setLocation(e.target.value) }} className="form-control" id="" />
-                                </Form.Group>
+                             {
+                                 props.curd=="client" &&  <Form.Group className="mb-3" controlId="formBasicEmail">
+                                 <label className="labelimp">Location</label>
+                                 <input type="text" value={app.location} required onChange={(e) => { setLocation(e.target.value) }} className="form-control" id="" />
+                             </Form.Group>
+                             }
+                                  {
+                                 props.curd!=="client" &&  <Form.Group className="mb-3" controlId="formBasicEmail">
+                                 <label className="labelimp">Location</label>
+                                 <input type="text" value={location} required onChange={(e) => { setLocation(e.target.value) }} className="form-control" id="" />
+                             </Form.Group>
+                             }
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <label className="labelimp">Net Amount</label>
-                                    <input type="number" value={netAmount} required onChange={(e) => { setNetAmount(e.target.value) }} className="form-control" id="" />
+                                    <input type="number" value={costPerTest*inputFields.length} readOnly onChange={(e) => { setNetAmount(costPerTest*inputFields.length) }} className="form-control" id="" />
                                 </Form.Group>
+                                <p>{netAmount}</p>
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <label className="labelimp">Payment Type</label>
-                                    <Form.Select name="tat" value={paymentType} onChange={(e) => { setPaymentType(e.target.value) }} required id=""  >
+                                    <Form.Select name="tat" value={paymentType} onChange={(e) => { setPaymentType(e.target.value) }}  id=""  >
                                         <option value="">Select</option>
                                         <option value="Card">Card</option>
                                         <option value="Cash">Cash</option>
@@ -533,14 +671,26 @@ function CreateAppointment(props) {
                                         <option value="Account Transfer">Account Transfer</option>
                                     </Form.Select>
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <label className="labelimp">Payment Done</label>
-                                    <Form.Select name="payment_done" value={paymentDone} onChange={(e) => { setPaymentDone(e.target.value) }} required id=""  >
-                                        <option value="">Select</option>
-                                        <option value="1">yes</option>
-                                        <option value="0">no</option>
-                                    </Form.Select>
-                                </Form.Group>
+                           {
+                               props.curd=="client" &&  <Form.Group className="mb-3" controlId="formBasicEmail">
+                               <label className="labelimp">Payment Done</label>
+                               <Form.Select name="payment_done" value={paymentDone} onChange={(e) => { setPaymentDone(e.target.value) }} required  id=""  >
+                                   <option value="">Select</option>
+                                   <option value="1">yes</option>
+                                   <option value="0">no</option>
+                               </Form.Select>
+                           </Form.Group>
+                           }
+                            {
+                               props.curd!=="client" &&  <Form.Group className="mb-3" controlId="formBasicEmail">
+                               <label className="labelimp">Payment Done</label>
+                               <Form.Select name="payment_done" value={paymentDone} onChange={(e) => { setPaymentDone(e.target.value) }}  id=""  >
+                                   <option value="">Select</option>
+                                   <option value="1">yes</option>
+                                   <option value="0">no</option>
+                               </Form.Select>
+                           </Form.Group>
+                           }
                             </div>
                             <Row className="pt-5">
                                 {
@@ -548,14 +698,14 @@ function CreateAppointment(props) {
                                         className="btn btn-secondary"
 
                                     >
-                                        SUBMIT
+                                      Create Slot
                                     </button> :
                                         <button
                                             className="btn btn-primary"
                                             type="submit"
                                             onSubmit={handleSubmit}
                                         >
-                                            SUBMIT
+                                          Create Slot
                                         </button>
                                 }
 

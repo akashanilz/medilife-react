@@ -196,12 +196,12 @@ function View(props) {
           <button onClick={() => { history.push('/dashboard/createClient') }} className="btn btn-success ">Add Client</button>
         </div>}
         {props.curd == "employee" && <div className=" pl-8 pt-3 space-x-14 pb-3">
-          <button onClick={() => { history.push('/dashboard/createEmployee') }} className="btn btn-success ">Add Employee</button>
+          <button onClick={() => { history.push('/dashboard/createEmployee') }} className="btn btn-success ">Add Nurse</button>
         </div>}
         {props.curd == "driver" && <div className=" pl-8 pt-3 space-x-14 pb-3">
-          <button onClick={() => { history.push('/dashboard/createDriver') }} className="btn btn-success ">Add Driver</button>
+          <button onClick={() => { history.push('/dashboard/createDriver') }} className="btn btn-success ">Add Transporter</button>
         </div>}
-        {clients.length != 0 && props.curd == "driver" && <h1 className="head11 text-center pb-3">Drivers</h1>}
+        {clients.length != 0 && props.curd == "driver" && <h1 className="head11 text-center pb-3">Transporter</h1>}
         {clients.length != 0 && props.curd == "employee" && <h1 className=" head11 text-center pb-3">Employees</h1>}
         {empty && props.curd == "employee" && <h1 className=" head11 text-center pb-3">No Employees</h1>}
         {empty && props.curd == "client" && <h1 className=" head11 text-center pb-3">No Clients</h1>}

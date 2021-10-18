@@ -38,8 +38,8 @@ function Header() {
   const history = useHistory()
   const navigation = [
     { name: 'Dashboard', to: '/dashboard', current: true },
-    { name: 'Employees', to: '/dashboard/viewEmployees', current: false },
-    // { name: 'Clients', to: '/dashboard/viewClients', current: false },
+    { name: 'Nurses', to: '/dashboard/viewEmployees', current: false },
+     { name: 'Transporters', to: '/dashboard/viewDrivers', current: false },
 
   ]
   const navigation1 = [
@@ -72,13 +72,13 @@ function Header() {
                     <div className="flex-shrink-0 flex items-center">
                       <img
                         className="block lg:hidden h-8 w-auto"
-                        src="https://covidpcrtestathome.com/images/1.png"
-                        alt="Workflow"
+                        src="http://medilife.altdive.com/images/medilifelogo.png"
+                        alt="Medilife"
                       />
                       <img
                         className="hidden lg:block h-8 w-auto"
-                        src="https://covidpcrtestathome.com/images/1.png"
-                        alt="Workflow"
+                        src="http://medilife.altdive.com/images/medilifelogo.png"
+                        alt="Medilife"
                       />
                     </div>
                     <div className="hidden sm:block sm:ml-6">

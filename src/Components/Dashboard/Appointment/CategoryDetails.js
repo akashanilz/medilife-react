@@ -88,18 +88,19 @@ function CategoryDetails(props) {
     formData.append('company_address_uae', companyAddressUAE);
     formData.append('emirate_uae', emirateUAE);
     formData.append('country_visit_travel', countryVisitTravel);
-    formData.append('arriving_date_travel ', arrivingDateTravel);
-    formData.append('departure_date_travel ', departureDateTravel);
-    formData.append(' stay_length_travel ', stayLengthTravel);
-    formData.append(' institution_student ', institutionStudent);
-    formData.append('type_student ', typeStudent);
-    formData.append(' details_student ', detailsStudent);
-    formData.append('institution_type_student ', institutionTypeStudent);
-    formData.append(' location_student ', locationStudent);
-    formData.append(' camp_name_labour ', campNameLabour);
-    formData.append('  address_camp_labour ', addressCampLabour);
-    formData.append(' supervisor_name_labour ', supervisorNameLabour);
-    formData.append('supervisor_contact_number_labour ', supervisorContactNumberLabour);
+    formData.append('arriving_date_travel', arrivingDateTravel);
+    formData.append('departure_date_travel', departureDateTravel);
+    formData.append('stay_length_travel', stayLengthTravel);
+    formData.append('institution_student', institutionStudent);
+    formData.append('type_student', typeStudent);
+    formData.append('details_student', detailsStudent);
+    formData.append('institution_type_student', institutionTypeStudent);
+    formData.append('location_student', locationStudent);
+    formData.append('camp_name_labour', campNameLabour);
+    formData.append('address_camp_labour', addressCampLabour);
+    formData.append('supervisor_name_labour', supervisorNameLabour);
+    formData.append('supervisor_contact_number_labour', supervisorContactNumberLabour);
+    console.log(formData)
     const token = JSON.parse(localStorage.getItem("token"))
     const config = {
       headers: { Authorization: `Bearer ${token.token} ` }
@@ -162,6 +163,7 @@ function CategoryDetails(props) {
 
   return (
     <div>
+      <p>{arrivingDateTravel}</p>
  {client.length == 0 && <p className="empty">Empty</p>}
       {props.curd === "add" &&
         <div>
@@ -394,7 +396,7 @@ function CategoryDetails(props) {
                 {props.role == "admin" &&
                   <Col>
                     <label className="label" htmlFor="">MRN</label>
-                    <Form.Control required defaultValue={client.mrn} onChange={(e) => { setMrn(e.target.value) }} />
+                    <Form.Control defaultValue={client.mrn} onChange={(e) => { setMrn(e.target.value) }} />
                   </Col>
                 }
 
@@ -408,7 +410,7 @@ function CategoryDetails(props) {
                   </Col>
                   <Col>
                     <label className="label" htmlFor="">Rack Number</label>
-                    <Form.Control required defaultValue={client.rack_number} onChange={(e) => { setRackNumber(e.target.value) }} />
+                    <Form.Control  defaultValue={client.rack_number} onChange={(e) => { setRackNumber(e.target.value) }} />
                   </Col>
 
                 </Row>}
@@ -466,7 +468,7 @@ function CategoryDetails(props) {
                 <Col>
                   <label className="label" htmlFor="">Select Category</label>
                   <br />
-                  <Form.Select value={clientCategory} onChange={(e) => { setClientCategory(e.target.value) }} size="lg">
+                  <Form.Select required value={clientCategory} onChange={(e) => { setClientCategory(e.target.value) }} size="lg">
                     <option value="">Select Category</option>
                     <option value="uae">   UAE Residance</option>
                     <option value="travel">   Travel History Within 14 Days</option>
@@ -586,7 +588,7 @@ function CategoryDetails(props) {
               }
               <br />
 
-              {client &&
+              {clientCategory &&
                 <div>
                   {
                     loader ? <Button variant="secondary" disabled={true} >

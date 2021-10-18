@@ -59,8 +59,8 @@ function Login() {
           <div>
             <img
               className="mx-auto h-12 w-auto"
-              src="https://covidpcrtestathome.com/images/1.png"
-              alt="Workflow"
+              src="http://medilife.altdive.com/images/medilifelogo.png"
+              alt="Medilife Logo"
             />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Login</h2>
           </div>

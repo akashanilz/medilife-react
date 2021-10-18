@@ -124,7 +124,7 @@ function Update(props) {
     <div>
 
       <Form onSubmit={update} autoComplete={false} className="col-sm-6 offset-sm-3 py-8 pl-7 pr-5">
-        <p>{name}</p>
+        
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <input type="hidden" name="email" id="" />
           <label>Name</label>

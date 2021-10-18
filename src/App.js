@@ -30,6 +30,7 @@ import Completed from './Components/Dashboard/Appointment/Completed';
 import ViewAppointment from './Components/Dashboard/Appointment/ViewAppointment';
 import SsfCreate from './Components/Dashboard/Appointment/SsfCreate';
 import pageNotFound from './Components/pageNotFound';
+import ConfirmAppointmentsClients from './Components/Dashboard/Appointment/ConfirmAppointmentsClients';
 
 
 function App(props) {
@@ -90,6 +91,9 @@ function App(props) {
         </Route>
         <Route path="/dashboard/confirmAppointments">
           <ProtectedRoutes routes={ConfirmAppointment} />
+        </Route>
+        <Route path="/dashboard/confirmAppointmentsClients">
+          <ProtectedRoutes routes={ConfirmAppointmentsClients} />
         </Route>
         <Route path="/dashboard/scheduledAppointments">
           <ProtectedRoutes routes={SheduledAppointment} />

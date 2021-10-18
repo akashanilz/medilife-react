@@ -216,21 +216,21 @@ function AppointmentDetails(props) {
             </Row>
           }
           <br />
-          <h1 className="head11">Driver Details</h1>
+          <h1 className="head11">Transporter Details</h1>
           <br />
           <Row className="pt-3">
             <Col>
-              <label className="label" htmlFor="">Driver Name</label>
+              <label className="label" htmlFor="">Transporter Name</label>
               <Form.Control readOnly value={driver.name} />
             </Col>
             <Col>
-              <label className="label" htmlFor="">Driver Email</label>
+              <label className="label" htmlFor="">Transporter Email</label>
               <Form.Control readOnly value={driver.email} />
             </Col>
           </Row>
           <Row className="pt-3">
             <Col>
-              <label className="label" htmlFor="">Driver Mobile</label>
+              <label className="label" htmlFor="">Transporter Mobile</label>
               <Form.Control readOnly value={driver.mobile} />
             </Col>
 
@@ -238,21 +238,21 @@ function AppointmentDetails(props) {
           {props.curd == "viewAppointment" &&
             <div>
               <br />
-              <h1 className="head11">Employee Details</h1>
+              <h1 className="head11">Nurse Details</h1>
               <br />
               <Row className="pt-3">
                 <Col>
-                  <label className="label" htmlFor="">Employee Name</label>
+                  <label className="label" htmlFor="">Nurse Name</label>
                   <Form.Control readOnly value={employee.name} />
                 </Col>
                 <Col>
-                  <label className="label" htmlFor="">Employee Email</label>
+                  <label className="label" htmlFor="">Nurse Email</label>
                   <Form.Control readOnly value={employee.email} />
                 </Col>
               </Row>
               <Row className="pt-3">
                 <Col>
-                  <label className="label" htmlFor="">Employee Mobile</label>
+                  <label className="label" htmlFor="">Nurse Mobile</label>
                   <Form.Control readOnly value={employee.mobile} />
                 </Col>
 

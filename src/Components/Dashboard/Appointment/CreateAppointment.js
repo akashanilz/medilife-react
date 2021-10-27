@@ -396,9 +396,13 @@ function CreateAppointment(props) {
                                     <Form.Control readOnly value={date} />
                                 </Col> }
                                 {props.curd=="client" && <Col>
-                                    <label className="label" htmlFor="">Appointment Date</label>
+                                     <label className="label" htmlFor="">Appointment Date</label>
                                     <Form.Control readOnly value={app.date} />
                                 </Col> }
+                                {props.curd=="client" && <Col>
+                                    <label className="label" htmlFor="">Appointment Time</label>
+                                    <Form.Control readOnly value={app.time.time} />
+                                </Col> }++                                                                    
                             </Row>
 
                            {props.curd=="client" && employeeName && driverName && <Row className="pt-3">

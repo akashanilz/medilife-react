@@ -214,8 +214,8 @@ function View(props) {
       };
       
       confirmAlert({
-        title: 'Send Mail Confirm',
-        message: 'Edit option will not be available after sending mail.',
+        title: 'Send Mail/SMS Confirm',
+        message: 'Edit option will not be available after sending Mail/SMS.',
         buttons: [
           {
             label: 'Yes',
@@ -398,12 +398,12 @@ function View(props) {
  }} className="btn btn-danger">Assign</button>} {props.curd == "notconfirmed" && e.assign==1 && <p>Assigned </p> } </td>}
 
 {/**Add client */}
-{props.curd == "notconfirmed" && <td> {props.curd == "notconfirmed" && e.clients_count==0 && <button onClick={()=>{
+{props.curd == "notconfirmed" && <td> {props.curd == "notconfirmed" && e.clients_count==0 && e.assign==1 &&<button onClick={()=>{
  history.push({
    pathname:"/dashboard/confirmAppointmentsClients",
    state:e.id
  })
- }} className="btn btn-warning">Add Client</button>} {props.curd == "notconfirmed" && e.clients_count!==0 && <p>Client added </p> } </td>}
+ }} className="btn btn-warning">Add Client</button>} {props.curd == "notconfirmed" && e.clients_count!==0 && <p>Client added </p> } {props.curd == "notconfirmed" && e.clients_count==0 && e.assign==0 && <p>Only after assign </p> } </td>}
 
 
 {/**Edit Confirm */}

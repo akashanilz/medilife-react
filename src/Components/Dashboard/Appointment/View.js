@@ -11,6 +11,7 @@ function View(props) {
   const [id, setId] = useState('')
   const [employee, setEmployee] = useState([])
   const [employeeId, setEmployeeId] = useState('')
+  const [mailSend, setMailSend] = useState(false)
   const [driver, setDriver] = useState([])
   const [time, setTime] = useState([])
   const [timeId, setTimeId] = useState('')
@@ -211,7 +212,7 @@ function View(props) {
       const config = {
         headers: { Authorization: `Bearer ${token.token} ` }
       };
-
+      
       confirmAlert({
         title: 'Send Mail Confirm',
         message: 'Edit option will not be available after sending mail.',
@@ -219,15 +220,29 @@ function View(props) {
           {
             label: 'Yes',
             onClick: () =>
+         
+             {
+               setMailSend(true)
               axios.get(`/dashboard/confirmAppointment/${e}`, config).then((response) => {
                 confirmNotify()
                 getData()
+                setMailSend(false)
 
-              })
+              }).catch(
+             err=>{
+               setMailSend(false)
+               }
+              )
+             }
           },
           {
             label: 'No',
-            onClick: () => getData()
+            onClick: () => {
+              setMailSend(false)
+              getData()
+            }
+           
+            
           }
         ]
       });
@@ -400,8 +415,9 @@ function View(props) {
                     </svg> } {props.curd === "notconfirmed" && e.assign==0 && <p>Only after assign</p> } {props.curd === "notconfirmed" && e.assign==1 && e.mail==1 && <p>Mail send cannot edit</p> } </td> }
 
 {/**Mail */}
-{props.curd == "notconfirmed" && <td>{props.curd === "notconfirmed" && e.mail == 0 && e.assign==1 &&
-<button  onClick={() => confirmAppointment(e.id)} className="btn btn-warning">Send Mail</button>} {props.curd === "notconfirmed" && e.mail == 1 &&
+{props.curd == "notconfirmed" && <td>{props.curd === "notconfirmed" && e.mail == 0 && e.assign==1 &&  !mailSend &&
+<button  onClick={() => confirmAppointment(e.id)} className="btn btn-success">Send Mail/SMS</button>} {props.curd === "notconfirmed" && e.mail == 0 && e.assign==1 &&   mailSend &&
+<button disabled={true}  className="btn btn-secondary">Send Mail/SMS</button>} {props.curd === "notconfirmed" && e.mail == 1 &&
  <p>Mail Send</p> } {props.curd === "notconfirmed" && e.mail == 0 && e.assign==0 &&
  <p>Only after assign</p> }  </td>}
                   

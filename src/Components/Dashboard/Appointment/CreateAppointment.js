@@ -487,6 +487,7 @@ function CreateAppointment(props) {
                                             <label htmlFor="lastName">Contact Number </label>
                                             <input 
                                                 type="number"
+                                                required
                                                 className="form-control"
                                                 id="contact_number"
                                                 name="contact_number"

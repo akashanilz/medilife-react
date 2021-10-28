@@ -15,12 +15,8 @@ function Header() {
     if (!localStorage.getItem("token")) {
       history.push('/login')
     } else {
-
       getData()
-
-
     }
-
   }, [])
   function getData() {
     const token = JSON.parse(localStorage.getItem("token"))
@@ -180,7 +176,6 @@ function Header() {
                                   Sign out
                                 </p>
                               </div>
-
                             )}
                           </Menu.Item>
                         </Menu.Items>

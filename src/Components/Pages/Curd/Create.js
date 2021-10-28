@@ -183,7 +183,6 @@ function Create(props) {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <label>Name</label>
             <input type="text" required value={name} onChange={(e) => { setName(e.target.value) }} name="name" className="form-control" placeholder="Full Name" id="" />
-
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <label>Email</label>

@@ -160,7 +160,7 @@ function Header() {
                        </p>
                      )}
                    </Menu.Item> */}
-                          <Menu.Item>
+                         {auth.user && <Menu.Item>
 
                             {({ active }) => (
                               <div>
@@ -177,7 +177,7 @@ function Header() {
                                 </p>
                               </div>
                             )}
-                          </Menu.Item>
+                          </Menu.Item> }
                         </Menu.Items>
                       </Transition>
                     </Menu>

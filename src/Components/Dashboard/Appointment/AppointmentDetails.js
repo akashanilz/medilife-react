@@ -164,6 +164,7 @@ function AppointmentDetails(props) {
                 {appointment.disclosure == "1" ? <Form.Control readOnly value={appointment.net_amount} /> : <Form.Control defaultValue={appointment.net_amount} onChange={(e) => { setAmount(e.target.value) }} />}
               </Col>
             }
+         
             {props.curd == "viewAppointment" &&
 
               <Col>

@@ -12,3 +12,8 @@
   /* width */
   --form-width: 16rem;
 }
+.dash_body{
+  background-image: url('https://i.imgur.com/QdluEzp.png');
+  min-height: 90vh;
+
+}

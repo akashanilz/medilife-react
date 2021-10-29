@@ -72,7 +72,7 @@ function CreateAppointment(props) {
             remark: remark,
             number_of_test: inputFields.length,
             cost_per_test: costPerTest,
-            net_amount: netAmount,
+            net_amount: costPerTest*inputFields.length,
             payment_type: paymentType,
             driver: driver,
             location: location,
@@ -402,7 +402,7 @@ function CreateAppointment(props) {
                                 {props.curd=="client" && <Col>
                                     <label className="label" htmlFor="">Appointment Time</label>
                                     <Form.Control readOnly value={app.time.time} />
-                                </Col> }++                                                                    
+                                </Col> }                                                                
                             </Row>
 
                            {props.curd=="client" && employeeName && driverName && <Row className="pt-3">

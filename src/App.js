@@ -46,7 +46,7 @@ function App(props) {
   const location = useLocation
 
   return (
-    <div className="bg-white min-h-screen">
+    <div style={{ backgroundColor:"white" }} className=" min-h-screen" >
 
       <Router>
         {/* { auth &&  <Header/> } */}

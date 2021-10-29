@@ -274,7 +274,7 @@ function View(props) {
 
   }
   return (
-    <div>
+    <div >
       {/* <Header/> */}
       {appointment.length == 0 && <p className="empty">Empty</p>}
       <div className="col-3 mt-3 ml-auto">
@@ -418,7 +418,7 @@ function View(props) {
 {props.curd == "notconfirmed" && <td>{props.curd === "notconfirmed" && e.mail == 0 && e.assign==1 &&  !mailSend &&
 <button  onClick={() => confirmAppointment(e.id)} className="btn btn-success">Send Mail/SMS</button>} {props.curd === "notconfirmed" && e.mail == 0 && e.assign==1 &&   mailSend &&
 <button disabled={true}  className="btn btn-secondary">Send Mail/SMS</button>} {props.curd === "notconfirmed" && e.mail == 1 &&
- <p>Mail Send</p> } {props.curd === "notconfirmed" && e.mail == 0 && e.assign==0 &&
+ <p>Mail/SMS Send</p> } {props.curd === "notconfirmed" && e.mail == 0 && e.assign==0 &&
  <p>Only after assign</p> }  </td>}
                   
                     {/**Confirm */}
